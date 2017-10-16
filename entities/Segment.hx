@@ -33,13 +33,13 @@ class Segment extends Sprite{
         square.y = 0;
 	}
 
-	public function new(color:Uint, newLocation:Point){
+	public function new(color:Uint, posX:Float, posY:Float){
 		super();
 
 		var self:Segment = this;
 		self.square = new Shape();
 		self.color = color;
-		self.location = new Point(newLocation.x, newLocation.y);
+		self.location = new Point(posX.x, posY.y);
 
 		self.addChild(square);
 		self.draw(color);

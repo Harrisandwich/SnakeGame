@@ -10,8 +10,6 @@ class Head extends Segment{
 		
 		if(dir == "left"){
 
-			this.location =
-
 		}else if(dir == "right"){
 
 		}else if(dir == "up"){
