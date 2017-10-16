@@ -6,7 +6,7 @@ import flash.display.Shape;
 import flash.Lib;
 
 //Custom classes
-import gameBoard.Cell;
+import playArea.Cell;
 
 class Segment extends Sprite{
 

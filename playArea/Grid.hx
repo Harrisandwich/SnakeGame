@@ -1,4 +1,4 @@
-package gameBoard;
+package playArea;
 
 class Grid extends Sprite{
 	/*
@@ -13,9 +13,11 @@ class Grid extends Sprite{
 	private function initializeGrid(size:UInt):Array{
 		var newGrid:Array;
 
-		/*for(i in 0...size){
-
-		}*/
+		/*
+			I need:
+			- height of play space 
+			- width of play space 
+		*/
 
 	}
 	public function new(gridSize:UInt){

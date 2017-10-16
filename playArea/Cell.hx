@@ -1,4 +1,4 @@
-package gameBoard;
+package playArea;
 
 import flash.geom.Point;
 
