@@ -11,7 +11,7 @@ import entities.Head;
 
 class Snake {
 
-
+	private var direction:String;
 	private var head:Head;
 	private var neck:TailSegment;
 	private var tail:List<TailSegment>;
@@ -19,17 +19,23 @@ class Snake {
 	//change direction of snake head
 	public function changeDirection(dir:String):Void{
 
-		head.changeDirection(dir, tail[0]);
+		direction = dir;
+		head.changeDirection(dir, neck);
+	}
+
+	public function getHeadLocation():Point{
+		var headLocation:Point = head.location;
+		return headLocation;
 	}
 	
 	//move whole snake 
 	public function move():Void{
 		
-		//TODO: Check collisions before move
+		
 
 		//move head as it governs direction of the body
-		head.move();
-		neck.move(head);
+		head.move(direction);
+		neck.move(head.previousLocation);
 		//move first segment based on head
 		
 		var loopMax:Int = tail.length - 1;
@@ -40,12 +46,12 @@ class Snake {
 
 			//if the segment is the first, skip. It's following the head
 			if(s == 0){
-				tail[s].move(neck);
+				tail[s].move(neck.previousLocation);
 			}else{
 				//get the segment before this one
 				var previousSegment = s - 1;
 				//move the segment using its position
-				s.move(tail[previousSegment]);
+				s.move(tail[previousSegment].previousLocation);
 			}
 			
 		}
@@ -56,7 +62,7 @@ class Snake {
 		
 		tail = new List<TailSegment>();
 		head = new Head(color, headLocation.x, headLocation.y);
-
+		direction = startDir;
 
 		//getting long...move to func?
 		var neckPosX:Float;
@@ -64,7 +70,7 @@ class Snake {
 
 		var tailPosX:Float;
 		var tailPosY:Float;
-				
+
 		if(orientation == "hor"){
 
 			neckPosY = headLocation.y;
@@ -101,7 +107,8 @@ class Snake {
 		neck = new TailSegment(color, neckPosX, neckPosY);
 		tail.add(new TailSegment(color, tailPosX, tailPosY));
 		
-		
+
+		//Add snake to grid
 	}
 
 }

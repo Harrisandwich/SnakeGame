@@ -9,4 +9,7 @@ import entities.Segment;
 
 class TailSegment extends Segment{
 	
+	public function new(color:UInt, x:Float, y:Float){
+		super(color, x, y);
+	}
 }

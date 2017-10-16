@@ -1,8 +1,8 @@
 package gameBoard;
 
-class Cell{
+import flash.geom.Point;
 
-	private var x:UInt;
-	private var y:UInt;
+class Cell extends Point{ 
+
 	private var size:Float;
 }

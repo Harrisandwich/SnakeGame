@@ -11,18 +11,20 @@ class Main extends Sprite {
 
     private var input:Input;
     private var shape:Shape;
+    private var snake:Snake;
     private var keyPressed:Bool;
     private var inited:Bool;
 
     function init() 
     {
         shape = new Shape();
+
        // create a center aligned rounded gray square
-        shape.graphics.beginFill(0x333333);
+        /*shape.graphics.beginFill(0x333333);
         shape.graphics.drawRoundRect(0, 0, 100, 100, 10);
         shape.x = (stage.stageWidth - 100) / 2;
         shape.y = (stage.stageHeight - 100) / 2;
-        stage.addChild(shape);
+        stage.addChild(shape);*/
         
 
         Input.setAction('right_arrow', moveShapeRight);
@@ -56,7 +58,12 @@ class Main extends Sprite {
     }
     private function everyFrame(evt:Event):Void {
         
-        drawSquare();
+        /*
+            complete player actions
+            check potential collisions
+            move snakes
+        */
+        //drawSquare();
     }
 
     public function new() 

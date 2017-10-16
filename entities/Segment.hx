@@ -39,7 +39,7 @@ class Segment extends Sprite{
 		var self:Segment = this;
 		self.square = new Shape();
 		self.color = color;
-		self.location = new Point(posX.x, posY.y);
+		self.location = new Point(posX, posY);
 
 		self.addChild(square);
 		self.draw(color);
