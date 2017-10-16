@@ -6,12 +6,16 @@ class Grid extends Sprite{
 		gridSize
 		cells
 
-		init()
+		
 	*/
 	private var grid:Array;
 
 	private function initializeGrid(size:UInt):Array{
 		var newGrid:Array;
+
+		/*for(i in 0...size){
+
+		}*/
 
 	}
 	public function new(gridSize:UInt){

@@ -14,7 +14,7 @@ class Snake {
 	private var direction:String;
 	private var head:Head;
 	private var neck:TailSegment;
-	private var tail:List<TailSegment>;
+	private var tail:Array<TailSegment>;
 
 	//change direction of snake head
 	public function changeDirection(dir:String):Void{
@@ -34,7 +34,7 @@ class Snake {
 		
 
 		//move head as it governs direction of the body
-		head.move(direction);
+		head.moveHead(direction);
 		neck.move(head.previousLocation);
 		//move first segment based on head
 		
@@ -51,7 +51,7 @@ class Snake {
 				//get the segment before this one
 				var previousSegment = s - 1;
 				//move the segment using its position
-				s.move(tail[previousSegment].previousLocation);
+				tail[s].move(tail[previousSegment].previousLocation);
 			}
 			
 		}
@@ -60,7 +60,7 @@ class Snake {
 
 	public function new(color:UInt, headLocation:Point, orientation:String, startDir:String){
 		
-		tail = new List<TailSegment>();
+		tail = new Array<TailSegment>();
 		head = new Head(color, headLocation.x, headLocation.y);
 		direction = startDir;
 
@@ -105,7 +105,7 @@ class Snake {
 		}
 
 		neck = new TailSegment(color, neckPosX, neckPosY);
-		tail.add(new TailSegment(color, tailPosX, tailPosY));
+		tail.push(new TailSegment(color, tailPosX, tailPosY));
 		
 
 		//Add snake to grid

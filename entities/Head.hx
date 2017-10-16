@@ -1,11 +1,12 @@
 package entities;
 
 //Custom Classes
+import entities.TailSegment;
 import entities.Segment;
 
 class Head extends Segment{
 
-	public function changeDirection(dir:String){
+	public function changeDirection(dir:String, neck:TailSegment){
 		
 		if(dir == "left"){
 			this.location.x -= 1;
@@ -23,7 +24,7 @@ class Head extends Segment{
 		}
 	}
 
-	public function move(dir:String){
+	public function moveHead(dir:String):Void{
 		this.previousLocation = this.location;
 
 		if(dir == "left"){

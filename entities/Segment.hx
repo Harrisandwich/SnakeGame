@@ -11,11 +11,9 @@ import gameBoard.Cell;
 class Segment extends Sprite{
 
 	private var color:UInt;
-	private var size:Point; 
-
 	private var square:Shape;
-	private var location:Point; 
-	private var previousLocation:Point; 
+	public var location:Point; 
+	public var previousLocation:Point; 
 
 
 	public function move(newLocation:Point){
@@ -27,13 +25,13 @@ class Segment extends Sprite{
 	public function draw(color:UInt){
 
 		//0x333333
-		square.graphics.beginFill(color);
+		/*square.graphics.beginFill(color);
         square.graphics.drawRoundRect(0, 0, size, size, 10);
         square.x = 0;
-        square.y = 0;
+        square.y = 0;*/
 	}
 
-	public function new(color:Uint, posX:Float, posY:Float){
+	public function new(color:UInt, posX:Float, posY:Float){
 		super();
 
 		var self:Segment = this;

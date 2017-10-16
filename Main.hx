@@ -6,6 +6,7 @@ import flash.Lib;
 
 //Custom classes
 import inputUtilities.Input;
+import entities.Snake;
 
 class Main extends Sprite {
 
