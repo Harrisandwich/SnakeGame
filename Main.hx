@@ -1,9 +1,10 @@
-import flash.display.BitmapData;
-import flash.display.Sprite;
-import flash.Lib;
-import flash.display.Shape;
 import flash.events.KeyboardEvent;
 import flash.events.Event;
+import flash.display.Sprite;
+import flash.display.Shape;
+import flash.Lib;
+
+//Custom classes
 import inputUtilities.Input;
 
 class Main extends Sprite {

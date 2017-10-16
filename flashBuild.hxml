@@ -1,0 +1,4 @@
+-main Main
+-swf build/main-flash.swf  
+-swf-version 15 
+-swf-header 960:640:60:f68712
