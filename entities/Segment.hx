@@ -16,7 +16,11 @@ class Segment extends Sprite{
 	public var location:Point; 
 	public var previousLocation:Point; 
 
-
+	private function setWorldPos():Void{
+		var self:Segment = this;
+		self.x = self.location.x * size;
+		self.y = self.location.y * size;
+	}
 	public function move(newLocation:Point){
 
 		var self:Segment = this;
@@ -47,8 +51,7 @@ class Segment extends Sprite{
 		self.addChild(square);
 		self.draw();
 
-		self.x = self.location.x * size;
-		self.y = self.location.y * size;
+		setWorldPos();
 
 	}
 

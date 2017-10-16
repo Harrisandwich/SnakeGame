@@ -1,3 +1,4 @@
+import haxe.Timer;
 import flash.geom.Point;
 import flash.events.KeyboardEvent;
 import flash.events.Event;
@@ -14,8 +15,9 @@ import entities.Snake;
 
 class Main extends Sprite {
 
-    private var input:Input;
+    private var gameTimer:Timer;
 
+    private var input:Input;
     private var background:Shape;
     private var playArea:Sprite;
     private var grid:Grid;
@@ -49,38 +51,27 @@ class Main extends Sprite {
 
         snake = new Snake(0x009900,new Point(10,10),"hor","left",grid);
 
-        /*Input.setAction('right_arrow', moveShapeRight);
-        Input.setAction('left_arrow', moveShapeLeft);
-        Input.setAction('up_arrow', moveShapeUp);
-        Input.setAction('down_arrow', moveShapeDown);*/
+        gameTimer = new Timer(200);
+        gameTimer.run = gameLoop;
+
+        Input.setAction('right_arrow', snake.right);
+        Input.setAction('left_arrow', snake.left);
+        Input.setAction('up_arrow', snake.up);
+        Input.setAction('down_arrow', snake.down);
         // Game loop
         stage.addEventListener(Event.ENTER_FRAME, everyFrame);
         stage.addEventListener(KeyboardEvent.KEY_DOWN, Input.keyDown);
         stage.addEventListener(KeyboardEvent.KEY_UP, Input.keyUp);
     }
 
-    /*function moveShapeRight():Void{
-        shape.x += 1;
-    }
-    function moveShapeLeft():Void{
-        shape.x -= 1;
-    }
-    function moveShapeUp():Void{
-        shape.y -= 1;
-    }
-    function moveShapeDown():Void{
-        shape.y += 1;
-    }*/
+    private function gameLoop():Void{
+        
+        snake.animate();
 
-
+    }
     private function everyFrame(evt:Event):Void {
         
-        /*
-            complete player actions
-            check potential collisions
-            move snakes
-        */
-        //drawSquare();
+        //snake.draw();
     }
 
     public function new() 
