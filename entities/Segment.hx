@@ -21,10 +21,24 @@ class Segment extends Sprite{
 		self.x = self.location.x * size;
 		self.y = self.location.y * size;
 	}
+	public function moveHead(xd:Float, yd:Float){
+
+		var self:Segment = this;
+		var newLocation = new Point(location.x, location.y);
+		newLocation.x += xd;
+		newLocation.y += yd;
+
+		previousLocation = new Point(location.x, location.y);
+		location = new Point(newLocation.x, newLocation.y);
+
+		self.x = self.location.x * size;
+		self.y = self.location.y * size;
+	}
+
 	public function move(newLocation:Point){
 
 		var self:Segment = this;
-		
+
 		previousLocation = new Point(location.x, location.y);
 		location = new Point(newLocation.x, newLocation.y);
 

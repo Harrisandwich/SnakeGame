@@ -9,89 +9,58 @@ import flash.Lib;
 import playArea.Grid;
 
 import entities.Segment;
-import entities.Head;
-
-typedef Action = { action:String->Void, param:String};
 
 class Snake {
 
-	private var direction:String;
-	private var head:Head;
-	private var neck:Segment;
-	private var tail:Array<Segment>;
-
-	private var actions:List<Action>;
-
-
-
+	private var xd:Float;
+	private var yd:Float;
+	private var body:Array<Segment>;
 
 	//change direction of snake head
-	private function changeDirection(dir:String):Void{
+	private function changeDirection(dirX:Float, dirY:Float):Void{
 
-		trace("Change direction: " + dir);
-		direction = dir;
-		head.changeDirection(dir, neck);
+		xd = dirX;
+		yd = dirY;
+		
 	}
 
 	public function up():Void{
 		
 		trace("Up Hit");
-		var newHeadPosY:Float = head.location.y - 1;
-		if(newHeadPosY != neck.location.y){
-			changeDirection("up");
-		}
+		
+		changeDirection(0,-1);
+		
 		
 	}
 	public function down():Void{
 
-		var newHeadPosY:Float = head.location.y + 1;
-		if(newHeadPosY != neck.location.y){
-			changeDirection("down");	
-		}
+		
+		
+		changeDirection(0,1);	
+		
 
 	}
 	public function left():Void{
 
-		var newHeadPosX:Float = head.location.x - 1;
-		if(newHeadPosX != neck.location.x){
-			changeDirection("left");
-		}
+		
+		changeDirection(-1,0);
+		
 
 	}
 	public function right():Void{
 
-		var newHeadPosX:Float = head.location.x + 1;
-		if(newHeadPosX != neck.location.x){
-			changeDirection("right");	
-		}
+		
+		changeDirection(1,0);	
+		
 
-	}
-
-	public function getHeadLocation():Point{
-		var headLocation:Point = head.location;
-		return headLocation;
 	}
 	
-	public function completeActions():Void{
-		
-		for(a in actions){
-			a.action(a.param);
-		}
-	}
 	//move whole snake 
 	private function move():Void{
 
-		//move head as it governs direction of the body
-		head.moveHead(direction);
-		neck.move(head.previousLocation);
-		tail[0].move(neck.previousLocation);
-		//move first segment based on head
-		
-		var loopMax:Int = tail.length;
-
-
+		body[0].moveHead(xd,yd);
 		//for each segment in the tail
-		for(s in 0...loopMax){
+		for(s in 0...body.length){
 
 			//if the segment is the first, skip. It's following the head
 			if(s == 0) continue;
@@ -99,7 +68,7 @@ class Snake {
 			//get the segment before this one
 			var previousSegment = s - 1;
 			//move the segment using its position
-			tail[s].move(tail[previousSegment].previousLocation);
+			body[s].move(body[previousSegment].previousLocation);
 			
 			
 		}
@@ -107,58 +76,49 @@ class Snake {
 	}
 
 	public function draw():Void{
-		head.draw();
-		neck.draw();
-		for(t in tail){
+		for(t in body){
 			t.draw();
 		}
 	}
 
 	public function animate() {
-		
-		completeActions();
+	
 		move();
 		draw();
 	}
 
-	public function new(color:UInt, headLocation:Point, orientation:String, startDir:String, grid:Grid){
+	public function new(color:UInt, headLocation:Point, orientation:String, startDirX:Float, startDirY:Float, grid:Grid){
 		
-		actions = new List<Action>();
+		var startSize:UInt = 4;
+		
+		body = new Array<Segment>();
+		xd = startDirX;
+		yd = startDirY;
 
-		tail = new Array<Segment>();
-		head = new Head(color, headLocation.x, headLocation.y, grid.cellSize);
-		direction = startDir;
 
 		//getting long...move to func?
-		var neckPosX:Float;
-		var neckPosY:Float;
-
-		var tailPosX:Float;
-		var tailPosY:Float;
+		
 
 		if(orientation == "hor"){
 
-			neckPosY = headLocation.y;
-			tailPosY = headLocation.y;
+			
 
-			if(startDir == "left"){
+			if(startDirX == -1){
 
-				neckPosX = headLocation.x + 1;
-				tailPosX = headLocation.x + 2;
-				for(s in 0...4){
 				
-					var seg:Float = tailPosX + s;
-					tail.push(new Segment(color, seg, tailPosY, grid.cellSize));
+				for(s in 0...startSize){
+				
+					var seg:Float = headLocation.x + s;
+					body.push(new Segment(color, seg, headLocation.y, grid.cellSize));
 				}
 				
 			
 			}else{
-				neckPosX = headLocation.x - 1;
-				tailPosX = headLocation.x - 2;
-				for(s in 0...4){
 				
-					var seg:Float = tailPosX - s;
-					tail.push(new Segment(color, seg, tailPosY, grid.cellSize));
+				for(s in 0...startSize){
+				
+					var seg:Float = headLocation.x - s;
+					body.push(new Segment(color, seg, headLocation.y, grid.cellSize));
 				}
 
 			}
@@ -166,42 +126,27 @@ class Snake {
 			
 		}else{
 
-			neckPosX = headLocation.x;
-			tailPosX = headLocation.x;
-			if(startDir == "up"){
-
-				neckPosY = headLocation.y + 1;
-				tailPosY = headLocation.y + 2;
-				for(s in 0...4){
+			
+			if(startDirY == -1){
 				
-					var seg:Float = tailPosY + s;
-					tail.push(new Segment(color, tailPosX, seg, grid.cellSize));
+				for(s in 0...startSize){
+				
+					var seg:Float = headLocation.y + s;
+					body.push(new Segment(color, headLocation.x, seg, grid.cellSize));
 				}
 				
 			
 			}else{
-				neckPosY = headLocation.y - 1;
-				tailPosY = headLocation.y - 2;
 
-				for(s in 0...4){
+				for(s in 0...startSize){
 				
-					var seg:Float = tailPosY - s;
-					tail.push(new Segment(color, tailPosX, seg, grid.cellSize));
+					var seg:Float = headLocation.y - s;
+					body.push(new Segment(color, headLocation.x, seg, grid.cellSize));
 				}
 			}
 		}
 
-		neck = new Segment(color, neckPosX, neckPosY, grid.cellSize);
-
-		
-		
-		
-
-		//Add snake to grid
-		grid.addChild(head);
-		grid.addChild(neck);
-
-		for(s in tail){
+		for(s in body){
 			grid.addChild(s);
 		}
 		

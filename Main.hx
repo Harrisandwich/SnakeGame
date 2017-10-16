@@ -49,7 +49,7 @@ class Main extends Sprite {
 
         playArea.addChild(grid);
 
-        snake = new Snake(0x009900,new Point(10,10),"hor","left",grid);
+        snake = new Snake(0x009900,new Point(10,10),"hor",-1,0,grid);
 
         gameTimer = new Timer(200);
         gameTimer.run = gameLoop;
