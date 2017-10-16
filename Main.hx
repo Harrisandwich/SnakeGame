@@ -1,3 +1,4 @@
+import flash.geom.Point;
 import flash.events.KeyboardEvent;
 import flash.events.Event;
 import flash.display.Sprite;
@@ -6,23 +7,23 @@ import flash.Lib;
 
 //Custom classes
 import inputUtilities.Input;
+
+import playArea.Grid;
+
 import entities.Snake;
 
 class Main extends Sprite {
 
     private var input:Input;
+
     private var background:Shape;
-    private var shape:Shape;
     private var playArea:Sprite;
+    private var grid:Grid;
+
     private var snake:Snake;
-    private var keyPressed:Bool;
-    private var inited:Bool;
 
     function init() 
     {
-        
-
-       
         
         playArea = new Sprite();
 
@@ -40,12 +41,13 @@ class Main extends Sprite {
         playArea.x = (stage.stageWidth/2) - (playArea.width/3);
         playArea.y = (stage.stageHeight/2) - (playArea.height/2);
 
-        
-        
-
         stage.addChild(playArea);
 
+        grid = new Grid(20,playArea.width);
 
+        playArea.addChild(grid);
+
+        snake = new Snake(0x009900,new Point(10,10),"hor","left",grid);
 
         /*Input.setAction('right_arrow', moveShapeRight);
         Input.setAction('left_arrow', moveShapeLeft);
@@ -71,11 +73,6 @@ class Main extends Sprite {
     }*/
 
 
-    private function drawSquare():Void{
-        shape.graphics.beginFill(0x333333);
-        shape.graphics.drawRoundRect(0, 0, 100, 100, 10);
-        stage.addChild(shape);
-    }
     private function everyFrame(evt:Event):Void {
         
         /*

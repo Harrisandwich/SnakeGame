@@ -38,8 +38,8 @@ class Head extends Segment{
 			this.location.y += 1;
 		}
 	}
-	public function new(color:UInt, x:Float, y:Float){
-		super(color, x, y);
+	public function new(color:UInt, x:Float, y:Float, size:Float){
+		super(color, x, y, size);
 	}
 
 }

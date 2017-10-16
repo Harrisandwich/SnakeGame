@@ -6,8 +6,11 @@ import flash.display.Shape;
 import flash.Lib;
 
 //Custom Classes
+import playArea.Grid;
+
 import entities.TailSegment;
 import entities.Head;
+
 
 class Snake {
 
@@ -58,10 +61,10 @@ class Snake {
 
 	}
 
-	public function new(color:UInt, headLocation:Point, orientation:String, startDir:String){
+	public function new(color:UInt, headLocation:Point, orientation:String, startDir:String, grid:Grid){
 		
 		tail = new Array<TailSegment>();
-		head = new Head(color, headLocation.x, headLocation.y);
+		head = new Head(color, headLocation.x, headLocation.y, grid.cellSize);
 		direction = startDir;
 
 		//getting long...move to func?
@@ -104,11 +107,14 @@ class Snake {
 			}
 		}
 
-		neck = new TailSegment(color, neckPosX, neckPosY);
-		tail.push(new TailSegment(color, tailPosX, tailPosY));
+		neck = new TailSegment(color, neckPosX, neckPosY, grid.cellSize);
+		tail.push(new TailSegment(color, tailPosX, tailPosY, grid.cellSize));
 		
 
 		//Add snake to grid
+		grid.addChild(head);
+		grid.addChild(neck);
+		grid.addChild(tail[0]);
 	}
 
 }
