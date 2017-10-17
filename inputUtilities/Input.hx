@@ -17,6 +17,7 @@ class Input{
     }
 
     public static function keyDown(event:KeyboardEvent){
+        
     	var key:Key = Keyboard.getKeyByCode(event.keyCode);
         if(key != null){
             key.pressed = true;

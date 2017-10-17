@@ -23,6 +23,7 @@ Polish(Code):
   ☐ Enum for keys 
   ☐ Remove magic numbers
   ☐ Move game stuff in main to game object
+  ☐ Enum for orientation
 
 Polish(Feature):
   ☐ Player Colors

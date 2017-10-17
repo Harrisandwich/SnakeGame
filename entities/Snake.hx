@@ -18,6 +18,8 @@ class Snake {
 	private var size:Float;
 	private var color:UInt;
 	private var addToGrid:DisplayObject->DisplayObject;
+	public var isDead:Bool;
+	public var isHit:Bool;
 	public var body:Array<Segment>;
 
 	//change direction of snake head
@@ -92,23 +94,38 @@ class Snake {
 		}
 	}
 
+	public function flash():Void{
+		
+		for(b in body){
+			if(b.isDead){
+				b.flash();
+			}	
+		}
+		
+	}
+
 	public function animate() {
-	
-		move();
-		draw();
+		if(isDead || isHit){
+			flash();
+		}else{
+			move();
+			draw();
+		}
+		
 	}
 
 	public function new(color:UInt, headLocation:Point, orientation:String, startDirX:Float, startDirY:Float, grid:Grid){
 		
-		//move to param
+		
 		var self:Snake = this;
+		//move to param
 		var startSize:UInt = 4;
 		self.size = grid.cellSize;
 		self.body = new Array<Segment>();
 		self.color = color;
 		self.xd = startDirX;
 		self.yd = startDirY;
-
+		self.isDead = false;
 
 		//getting long...move to func?
 		//or change way this is laid out		

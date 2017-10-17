@@ -12,9 +12,12 @@ class Segment extends Sprite{
 
 	private var color:UInt;
 	private var square:Shape;
+	private var onFlash:Bool;
 	public var size:Float;
 	public var location:Point; 
 	public var previousLocation:Point; 
+	public var isDead:Bool;
+
 
 	private function setWorldPos():Void{
 		var self:Segment = this;
@@ -52,6 +55,25 @@ class Segment extends Sprite{
         square.graphics.drawRoundRect(0, 0, size, size, 10);
         square.x = 0;
         square.y = 0;
+	}
+
+	public function flash(){
+
+		if(onFlash){
+			square.graphics.beginFill(0x990099);
+	        square.graphics.drawRoundRect(0, 0, size, size, 10);
+	        square.x = 0;
+	        square.y = 0;
+	        onFlash = false;
+
+		}else{
+			square.graphics.beginFill(color);
+	        square.graphics.drawRoundRect(0, 0, size, size, 10);
+	        square.x = 0;
+	        square.y = 0;
+	        onFlash = true;
+		}
+		
 	}
 
 	public function new(color:UInt, posX:Float, posY:Float, size:Float){

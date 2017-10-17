@@ -11,7 +11,7 @@ import inputUtilities.Key;
 class Keyboard {
 
 	public static var keyMap:Map<String, Key> =[
-			"up_arrow" => new Key(38),
+            "up_arrow" => new Key(38),
     		"down_arrow" => new Key(40),
     		"left_arrow" => new Key(37),
     		"right_arrow" => new Key(39),

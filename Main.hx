@@ -15,139 +15,57 @@ import entities.Snake;
 import entities.Collectable;
 
 import gameControllers.ItemSpawner;
+import gameControllers.Game;
 
 class Main extends Sprite {
 
-    private var gameTimer:Timer;
-    private var input:Input;
-    private var background:Shape;
-    private var playArea:Sprite;
-    private var grid:Grid;
-    private var snakes:Array<Snake>;
-    private var currentItems:List<Collectable>;
+    private var settings:Map<String, Dynamic>;
+    private var game:Game;
+    private function init():Void{
 
-    private var gridSize:UInt;
-    private var maxItems:Int;
+        /*
+            settings["gridSize"]:UInt
+            settings["numberOfPlayers"]:UInt
+            settings["startOrientation"]:String
+            settings["maxItems"]:UInt
+            settings["speed"]
+            settings["playAreaSize"]stage.stageWidth/2
 
-    function init() 
-    {
-        gridSize = 30;
-        maxItems = 1;
-        playArea = new Sprite();
-        snakes = new Array<Snake>();
-        currentItems = new List<Collectable>();
-
-        // create a background to visualize the play area
-        background = new Shape();
-        background.graphics.beginFill(0x333333);
-        background.graphics.drawRoundRect(0, 0, (stage.stageWidth/2), (stage.stageWidth/2), 10);
-        background.x = 0;
-        background.y = 0;
-
-        playArea.addChild(background);
-
-        playArea.width = stage.stageWidth/2;
-        playArea.height = stage.stageWidth/2;
-        playArea.x = (stage.stageWidth/2) - (playArea.width/3);
-        playArea.y = (stage.stageHeight/2) - (playArea.height/2);
-
-        stage.addChild(playArea); 
-
-        grid = new Grid(gridSize,playArea.width);
-
-        playArea.addChild(grid);
-
-        snakes.push(new Snake(0x009900,new Point(10,10),"hor",-1,0,grid));
-        snakes.push(new Snake(0x009900,new Point(10,15),"hor",1,0,grid));
-
-        gameTimer = new Timer(500);
-        gameTimer.run = gameLoop;
-
-        Input.setAction('right_arrow', snakes[0].right);
-        Input.setAction('left_arrow', snakes[0].left);
-        Input.setAction('up_arrow', snakes[0].up);
-        Input.setAction('down_arrow', snakes[0].down);
-
-        Input.setAction('d', snakes[1].right);
-        Input.setAction('a', snakes[1].left);
-        Input.setAction('w', snakes[1].up);
-        Input.setAction('s', snakes[1].down);
-        // Game loop
-        //stage.addEventListener(Event.ENTER_FRAME, everyFrame);
-        stage.addEventListener(KeyboardEvent.KEY_DOWN, Input.keyDown);
-        stage.addEventListener(KeyboardEvent.KEY_UP, Input.keyUp);
-    }
-
-    private function checkCollisions():Void{
-        for(s in snakes){
-            var head:Point = s.getHeadLocation();
-            if(head.x < 0 
-                || head.x >= gridSize
-                || head.y < 0
-                || head.y >= gridSize){
-
-                //move to game over func
-                gameTimer.stop();
-            }
-
-            for(i in currentItems){
-                if(head.x == i.location.x 
-                && head.y == i.location.y){
-                    grid.removeChild(i);
-                    currentItems.remove(i);
-                    s.grow();
-
-                }
-            }
-
-            for(os in snakes){
-              
-                for(seg in 0...os.body.length){
-                
-                    if(os == s){
-                        if(seg == 0) continue;
-                    }
-                    
-
-                    if(head.x == os.body[seg].location.x 
-                        && head.y == os.body[seg].location.y){
-                        
-                        //move to game over func
-                        gameTimer.stop();
-
-                    }
-                }
-                
-            }
-            
-        }
-    }
-
-    private function gameLoop():Void{
-        
-        if(currentItems.length < maxItems){
-            var numberOfItemsMissing:UInt = maxItems - currentItems.length;
-            for(i in 0...numberOfItemsMissing){
-                var newItem = ItemSpawner.spawnItem(0xFFFF00,grid.cellSize,gridSize,100);
-                currentItems.add(newItem);
-                grid.addChild(newItem);
-            }
-            
-        }
-
-        
-        for(s in snakes){
-            s.animate();
-        }
-        
-        checkCollisions();
+            settings["controls"]:Array<Map<String, String/enum>>
+                Input.setAction(settings["controls"][s]["right"], snakes[s].right);
+                Input.setAction(settings["controls"][s]["left"], snakes[s].left);
+                Input.setAction(settings["controls"][s]["up"], snakes[s].up);
+                Input.setAction(settings["controls"][s]["down"], snakes[s].down);
+        */
+        //allow these things to be set somewhere
+        settings = [
+            "gridSize" => 30,
+            "numberOfPlayers" => 2,
+            "startOrientation" => "hor",
+            "maxItems" => 1,
+            "speed" => 500,
+            "playAreaSize" => (stage.stageWidth/2),
+            "controls" => [
+                [
+                    "left" => "left_arrow",
+                    "right" => "right_arrow",
+                    "down" => "down_arrow",
+                    "up" => "up_arrow",
+                ],
+                [
+                    "left" => "a",
+                    "right" => "d",
+                    "down" => "s",
+                    "up" => "w",
+                ],
+            ]
+        ];
+        game = new Game(settings);
+        stage.addChild(game);
+        game.setupGame();
+        game.play();
 
     }
-    private function everyFrame(evt:Event):Void {
-        
-        //snake.draw();
-    }
-
     public function new() 
     {
         super();    
