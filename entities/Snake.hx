@@ -25,34 +25,16 @@ class Snake {
 	}
 
 	public function up():Void{
-		
-		trace("Up Hit");
-		
-		changeDirection(0,-1);
-		
-		
+		changeDirection(0,-1);	
 	}
 	public function down():Void{
-
-		
-		
 		changeDirection(0,1);	
-		
-
 	}
 	public function left():Void{
-
-		
 		changeDirection(-1,0);
-		
-
 	}
 	public function right():Void{
-
-		
 		changeDirection(1,0);	
-		
-
 	}
 	
 	//move whole snake 
@@ -67,6 +49,7 @@ class Snake {
 				
 			//get the segment before this one
 			var previousSegment = s - 1;
+			
 			//move the segment using its position
 			body[s].move(body[previousSegment].previousLocation);
 			

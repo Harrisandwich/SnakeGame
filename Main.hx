@@ -45,13 +45,13 @@ class Main extends Sprite {
 
         stage.addChild(playArea);
 
-        grid = new Grid(20,playArea.width);
+        grid = new Grid(30,playArea.width);
 
         playArea.addChild(grid);
 
         snake = new Snake(0x009900,new Point(10,10),"hor",-1,0,grid);
 
-        gameTimer = new Timer(200);
+        gameTimer = new Timer(500);
         gameTimer.run = gameLoop;
 
         Input.setAction('right_arrow', snake.right);
@@ -59,14 +59,21 @@ class Main extends Sprite {
         Input.setAction('up_arrow', snake.up);
         Input.setAction('down_arrow', snake.down);
         // Game loop
-        stage.addEventListener(Event.ENTER_FRAME, everyFrame);
+        //stage.addEventListener(Event.ENTER_FRAME, everyFrame);
         stage.addEventListener(KeyboardEvent.KEY_DOWN, Input.keyDown);
         stage.addEventListener(KeyboardEvent.KEY_UP, Input.keyUp);
+    }
+
+    private function checkCollisions():Void{
+        //check collisions with walls
+        //check collisions with self or other snakes
+        //check collistion with collectables
     }
 
     private function gameLoop():Void{
         
         snake.animate();
+        checkCollisions();
 
     }
     private function everyFrame(evt:Event):Void {
