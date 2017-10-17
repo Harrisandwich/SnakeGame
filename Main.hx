@@ -12,21 +12,25 @@ import inputUtilities.Input;
 import playArea.Grid;
 
 import entities.Snake;
+import entities.Collectable;
+
+import gameControllers.ItemSpawner;
 
 class Main extends Sprite {
 
     private var gameTimer:Timer;
-
     private var input:Input;
     private var background:Shape;
     private var playArea:Sprite;
     private var grid:Grid;
-
     private var snake:Snake;
+    private var currentItem:Collectable;
+
+    private var gridSize:UInt;
 
     function init() 
     {
-        
+        gridSize = 30;
         playArea = new Sprite();
 
         // create a background to visualize the play area
@@ -43,9 +47,9 @@ class Main extends Sprite {
         playArea.x = (stage.stageWidth/2) - (playArea.width/3);
         playArea.y = (stage.stageHeight/2) - (playArea.height/2);
 
-        stage.addChild(playArea);
+        stage.addChild(playArea); 
 
-        grid = new Grid(30,playArea.width);
+        grid = new Grid(gridSize,playArea.width);
 
         playArea.addChild(grid);
 
@@ -72,6 +76,10 @@ class Main extends Sprite {
 
     private function gameLoop():Void{
         
+        if(currentItem == null){
+            currentItem = ItemSpawner.spawnItem(0xFFFF00,grid.cellSize,gridSize,100);
+            grid.addChild(currentItem);
+        }
         snake.animate();
         checkCollisions();
 

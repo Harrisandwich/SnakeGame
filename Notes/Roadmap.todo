@@ -1,0 +1,24 @@
+Features:
+  ☐ Item Spawn
+  ☐ Collision
+    ☐ Walls
+    ☐ Self
+    ☐ Collectables
+    ☐ Other snakes
+  ☐ Game Over
+  ☐ Multi Snake
+    ☐ Player Controller 
+    ☐ Game Controller 
+  ☐ Display Score
+  ☐ Menu
+    ☐ Play 1p
+    ☐ Play 2p
+    ☐ Settings
+      ☐ Play Area Size
+      ☐ Player Controls
+      ☐ Speed
+
+
+Polish:
+  ☐ Refactor 
+  
