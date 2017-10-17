@@ -22,8 +22,22 @@ class Snake {
 
 	//change direction of snake head
 	private function changeDirection(dirX:Float, dirY:Float):Void{
-		xd = dirX;
-		yd = dirY;
+
+		var headPos:Point = body[0].location;
+		var neckPos:Point = body[1].location;
+		var moveValid:Bool = true;
+		if((headPos.x + dirX) == neckPos.x 
+			&& (headPos.y + dirY) == neckPos.y){
+
+			moveValid = false;
+
+		}
+
+		if(moveValid){
+			xd = dirX;
+			yd = dirY;
+		}
+		
 	}
 
 	//move whole snake 

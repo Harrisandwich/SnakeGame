@@ -19,8 +19,17 @@ Features:
       ☐ Speed
 
 
-Polish:
+Polish(Code):
   ☐ Enum for keys 
   ☐ Remove magic numbers
   ☐ Move game stuff in main to game object
+
+Polish(Feature):
+  ☐ Player Colors
+
+Bugs:
+  ☐ Snakes eat their own heads. Easy fix
   
+Out of scope:
+  ☐ Lives?
+  ☐ Web Socket? :D :D 
