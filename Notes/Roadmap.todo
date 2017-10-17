@@ -1,9 +1,9 @@
 Features:
-  ☐ Item Spawn
-  ☐ Collision
-    ☐ Walls
-    ☐ Self
-    ☐ Collectables
+  ✔ Item Spawn @done (17-10-17 11:51)
+  ✔ Collision @done (17-10-17 11:51)
+    ✔ Walls @done (17-10-17 11:51)
+    ✔ Self @done (17-10-17 11:51)
+    ✔ Collectables @done (17-10-17 11:51)
     ☐ Other snakes
   ☐ Game Over
   ☐ Multi Snake
@@ -20,5 +20,7 @@ Features:
 
 
 Polish:
-  ☐ Refactor 
+  ☐ Enum for keys 
+  ☐ Remove magic numbers
+  ☐ Move game stuff in main to game object
   

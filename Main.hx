@@ -58,6 +58,7 @@ class Main extends Sprite {
         playArea.addChild(grid);
 
         snakes.push(new Snake(0x009900,new Point(10,10),"hor",-1,0,grid));
+        snakes.push(new Snake(0x009900,new Point(10,15),"hor",1,0,grid));
 
         gameTimer = new Timer(500);
         gameTimer.run = gameLoop;
@@ -66,6 +67,11 @@ class Main extends Sprite {
         Input.setAction('left_arrow', snakes[0].left);
         Input.setAction('up_arrow', snakes[0].up);
         Input.setAction('down_arrow', snakes[0].down);
+
+        Input.setAction('d', snakes[1].right);
+        Input.setAction('a', snakes[1].left);
+        Input.setAction('w', snakes[1].up);
+        Input.setAction('s', snakes[1].down);
         // Game loop
         //stage.addEventListener(Event.ENTER_FRAME, everyFrame);
         stage.addEventListener(KeyboardEvent.KEY_DOWN, Input.keyDown);
@@ -94,17 +100,24 @@ class Main extends Sprite {
                 }
             }
 
-            for(seg in 0...s.body.length){
+            for(os in snakes){
+              
+                for(seg in 0...os.body.length){
                 
-                if(seg == 0) continue;
-
-                if(head.x == s.body[seg].location.x 
-                    && head.y == s.body[seg].location.y){
+                    if(os == s){
+                        if(seg == 0) continue;
+                    }
                     
-                    //move to game over func
-                    gameTimer.stop();
 
+                    if(head.x == os.body[seg].location.x 
+                        && head.y == os.body[seg].location.y){
+                        
+                        //move to game over func
+                        gameTimer.stop();
+
+                    }
                 }
+                
             }
             
         }

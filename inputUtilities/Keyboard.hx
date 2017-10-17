@@ -14,7 +14,11 @@ class Keyboard {
 			"up_arrow" => new Key(38),
     		"down_arrow" => new Key(40),
     		"left_arrow" => new Key(37),
-    		"right_arrow" => new Key(39)
+    		"right_arrow" => new Key(39),
+            "w" => new Key(87),
+            "d" => new Key(68),
+            "s" => new Key(83),
+            "a" => new Key(65)
     	];
     
     public static function setAction(key:String, action:Void->Void){
