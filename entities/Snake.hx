@@ -1,5 +1,6 @@
 package entities;
 
+import flash.display.DisplayObject;
 import flash.geom.Point;
 import flash.display.Sprite;
 import flash.display.Shape;
@@ -14,29 +15,17 @@ class Snake {
 
 	private var xd:Float;
 	private var yd:Float;
-	private var body:Array<Segment>;
+	private var size:Float;
+	private var color:UInt;
+	private var addToGrid:DisplayObject->DisplayObject;
+	public var body:Array<Segment>;
 
 	//change direction of snake head
 	private function changeDirection(dirX:Float, dirY:Float):Void{
-
 		xd = dirX;
 		yd = dirY;
-		
 	}
 
-	public function up():Void{
-		changeDirection(0,-1);	
-	}
-	public function down():Void{
-		changeDirection(0,1);	
-	}
-	public function left():Void{
-		changeDirection(-1,0);
-	}
-	public function right():Void{
-		changeDirection(1,0);	
-	}
-	
 	//move whole snake 
 	private function move():Void{
 
@@ -57,6 +46,31 @@ class Snake {
 		}
 
 	}
+	public function grow():Void{
+
+		var last:Segment = body[(body.length - 1)];
+		var newSegment:Segment = new Segment(color, last.previousLocation.x, last.previousLocation.y, size);
+		body.push(newSegment);
+		addToGrid(newSegment);
+
+
+	}
+	public function getHeadLocation():Point{
+		return body[0].location;
+	}
+
+	public function up():Void{
+		changeDirection(0,-1);	
+	}
+	public function down():Void{
+		changeDirection(0,1);	
+	}
+	public function left():Void{
+		changeDirection(-1,0);
+	}
+	public function right():Void{
+		changeDirection(1,0);	
+	}
 
 	public function draw():Void{
 		for(t in body){
@@ -72,15 +86,18 @@ class Snake {
 
 	public function new(color:UInt, headLocation:Point, orientation:String, startDirX:Float, startDirY:Float, grid:Grid){
 		
+		//move to param
+		var self:Snake = this;
 		var startSize:UInt = 4;
-		
-		body = new Array<Segment>();
-		xd = startDirX;
-		yd = startDirY;
+		self.size = grid.cellSize;
+		self.body = new Array<Segment>();
+		self.color = color;
+		self.xd = startDirX;
+		self.yd = startDirY;
 
 
 		//getting long...move to func?
-		
+		//or change way this is laid out		
 
 		if(orientation == "hor"){
 
@@ -92,7 +109,7 @@ class Snake {
 				for(s in 0...startSize){
 				
 					var seg:Float = headLocation.x + s;
-					body.push(new Segment(color, seg, headLocation.y, grid.cellSize));
+					self.body.push(new Segment(color, seg, headLocation.y, size));
 				}
 				
 			
@@ -101,7 +118,7 @@ class Snake {
 				for(s in 0...startSize){
 				
 					var seg:Float = headLocation.x - s;
-					body.push(new Segment(color, seg, headLocation.y, grid.cellSize));
+					self.body.push(new Segment(color, seg, headLocation.y, size));
 				}
 
 			}
@@ -115,7 +132,7 @@ class Snake {
 				for(s in 0...startSize){
 				
 					var seg:Float = headLocation.y + s;
-					body.push(new Segment(color, headLocation.x, seg, grid.cellSize));
+					self.body.push(new Segment(color, headLocation.x, seg, size));
 				}
 				
 			
@@ -124,13 +141,13 @@ class Snake {
 				for(s in 0...startSize){
 				
 					var seg:Float = headLocation.y - s;
-					body.push(new Segment(color, headLocation.x, seg, grid.cellSize));
+					self.body.push(new Segment(color, headLocation.x, seg, size));
 				}
 			}
 		}
-
-		for(s in body){
-			grid.addChild(s);
+		self.addToGrid = grid.addChild;
+		for(s in self.body){
+			self.addToGrid(s);
 		}
 		
 	}

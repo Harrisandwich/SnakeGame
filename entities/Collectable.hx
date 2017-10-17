@@ -35,6 +35,8 @@ class Collectable extends Sprite implements ICollectable{
 		self.location = location;
 		self.value = value;
 		self.addChild(shape);
+		self.x = self.location.x * self.size;
+		self.y = self.location.y * self.size;
 		draw();
 	}
 

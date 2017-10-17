@@ -23,15 +23,19 @@ class Main extends Sprite {
     private var background:Shape;
     private var playArea:Sprite;
     private var grid:Grid;
-    private var snake:Snake;
-    private var currentItem:Collectable;
+    private var snakes:Array<Snake>;
+    private var currentItems:List<Collectable>;
 
     private var gridSize:UInt;
+    private var maxItems:Int;
 
     function init() 
     {
         gridSize = 30;
+        maxItems = 1;
         playArea = new Sprite();
+        snakes = new Array<Snake>();
+        currentItems = new List<Collectable>();
 
         // create a background to visualize the play area
         background = new Shape();
@@ -53,15 +57,15 @@ class Main extends Sprite {
 
         playArea.addChild(grid);
 
-        snake = new Snake(0x009900,new Point(10,10),"hor",-1,0,grid);
+        snakes.push(new Snake(0x009900,new Point(10,10),"hor",-1,0,grid));
 
         gameTimer = new Timer(500);
         gameTimer.run = gameLoop;
 
-        Input.setAction('right_arrow', snake.right);
-        Input.setAction('left_arrow', snake.left);
-        Input.setAction('up_arrow', snake.up);
-        Input.setAction('down_arrow', snake.down);
+        Input.setAction('right_arrow', snakes[0].right);
+        Input.setAction('left_arrow', snakes[0].left);
+        Input.setAction('up_arrow', snakes[0].up);
+        Input.setAction('down_arrow', snakes[0].down);
         // Game loop
         //stage.addEventListener(Event.ENTER_FRAME, everyFrame);
         stage.addEventListener(KeyboardEvent.KEY_DOWN, Input.keyDown);
@@ -69,18 +73,60 @@ class Main extends Sprite {
     }
 
     private function checkCollisions():Void{
-        //check collisions with walls
-        //check collisions with self or other snakes
-        //check collistion with collectables
+        for(s in snakes){
+            var head:Point = s.getHeadLocation();
+            if(head.x < 0 
+                || head.x >= gridSize
+                || head.y < 0
+                || head.y >= gridSize){
+
+                //move to game over func
+                gameTimer.stop();
+            }
+
+            for(i in currentItems){
+                if(head.x == i.location.x 
+                && head.y == i.location.y){
+                    grid.removeChild(i);
+                    currentItems.remove(i);
+                    s.grow();
+
+                }
+            }
+
+            for(seg in 0...s.body.length){
+                
+                if(seg == 0) continue;
+
+                if(head.x == s.body[seg].location.x 
+                    && head.y == s.body[seg].location.y){
+                    
+                    //move to game over func
+                    gameTimer.stop();
+
+                }
+            }
+            
+        }
     }
 
     private function gameLoop():Void{
         
-        if(currentItem == null){
-            currentItem = ItemSpawner.spawnItem(0xFFFF00,grid.cellSize,gridSize,100);
-            grid.addChild(currentItem);
+        if(currentItems.length < maxItems){
+            var numberOfItemsMissing:UInt = maxItems - currentItems.length;
+            for(i in 0...numberOfItemsMissing){
+                var newItem = ItemSpawner.spawnItem(0xFFFF00,grid.cellSize,gridSize,100);
+                currentItems.add(newItem);
+                grid.addChild(newItem);
+            }
+            
         }
-        snake.animate();
+
+        
+        for(s in snakes){
+            s.animate();
+        }
+        
         checkCollisions();
 
     }

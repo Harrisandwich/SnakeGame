@@ -12,7 +12,7 @@ class Segment extends Sprite{
 
 	private var color:UInt;
 	private var square:Shape;
-	private var size:Float;
+	public var size:Float;
 	public var location:Point; 
 	public var previousLocation:Point; 
 
