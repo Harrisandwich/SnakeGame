@@ -5,28 +5,36 @@ Features:
     ✔ Self @done (17-10-17 11:51)
     ✔ Collectables @done (17-10-17 11:51)
     ✔ Other snakes @done (17-10-17 12:07)
-  ☐ Game Over
-  ☐ Multi Snake
-    ☐ Player Controller 
-    ☐ Game Controller 
-  ☐ Display Score
-  ☐ Menu
+  ✔ Game Over @done (17-10-17 13:56)
+  ☐ Game Menu
     ☐ Play 1p
     ☐ Play 2p
-    ☐ Settings
-      ☐ Play Area Size
-      ☐ Player Controls
-      ☐ Speed
+  ☐ Settings Menu
+    ☐ Play Area Size
+    ☐ Player Controls
+    ☐ Speed
+  ☐ Player modularity
+    ☐ Player Controller 
+    ☐ Game Controller 
+  ☐ Computer Player
+  
 
 
 Polish(Code):
   ☐ Enum for keys 
   ☐ Remove magic numbers
   ☐ Move game stuff in main to game object
-  ☐ Enum for orientation
+  ☐ Enum for settings 
+  ☐ Better comments 
+  ☐ Tidy up Game class
+  ☐ Incorperate lambdas?
 
 Polish(Feature):
   ☐ Player Colors
+
+Test:
+  ☐ Functionality
+  ☐ Screen Sizes
 
 Bugs:
   ☐ Snakes eat their own heads. Easy fix

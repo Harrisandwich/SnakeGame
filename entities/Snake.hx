@@ -18,6 +18,7 @@ class Snake {
 	private var size:Float;
 	private var color:UInt;
 	private var addToGrid:DisplayObject->DisplayObject;
+	private var removeFromGrid:DisplayObject->DisplayObject;
 	public var isDead:Bool;
 	public var isHit:Bool;
 	public var body:Array<Segment>;
@@ -104,16 +105,18 @@ class Snake {
 		
 	}
 
-	public function animate() {
-		if(isDead || isHit){
-			flash();
-		}else{
-			move();
-			draw();
-		}
+	public function animate():Void {
+		
+		move();
+		draw();
+		
 		
 	}
-
+	public function remove():Void{
+		for(b in body){
+			removeFromGrid(b);
+		}
+	}
 	public function new(color:UInt, headLocation:Point, orientation:String, startDirX:Float, startDirY:Float, grid:Grid){
 		
 		
@@ -177,6 +180,7 @@ class Snake {
 			}
 		}
 		self.addToGrid = grid.addChild;
+		self.removeFromGrid = grid.removeChild;
 		for(s in self.body){
 			self.addToGrid(s);
 		}

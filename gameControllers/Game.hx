@@ -18,6 +18,8 @@ import playArea.Grid;
 import entities.Snake;
 import entities.Collectable;
 
+import gameUI.GameMenu;
+
 import gameControllers.ItemSpawner;
 
 class Game extends Sprite{
@@ -30,6 +32,7 @@ class Game extends Sprite{
 	//move these to settings soon
 	private var gridSize:UInt;
     private var maxItems:Int;
+    private var playAreaSize:Float;
 
 
 	//Mechanics
@@ -38,6 +41,7 @@ class Game extends Sprite{
 
 	//UI
 	private var gameOverText:TextField;
+	private var gameMenu:GameMenu;
 
 	//Entities
 	private var playArea:Sprite;
@@ -68,7 +72,7 @@ class Game extends Sprite{
                 || head.y >= settings["gridSize"]){
 
                 //move to game over func
-            	s.isDead = true;
+            	s.body[0].isDead = true;
                 gameOver();
                 
             }
@@ -124,7 +128,7 @@ class Game extends Sprite{
 	        checkCollisions();
 	    }else{
 	    	for(s in snakes){
-	            s.animate();
+	            s.flash();
 	        }
 	    }
 
@@ -134,40 +138,86 @@ class Game extends Sprite{
         //snake.draw();
     }
 
-    public function setupGame():Void{
+    public function init():Void{
 
-        playArea = new Sprite();
-        snakes = new Array<Snake>();
-        currentItems = new List<Collectable>();
-        grid = new Grid(settings["gridSize"],settings["playAreaSize"]);
-        gameOverText = new TextField();
-
-        // create a background to visualize the play area
+    	settings = Settings.getSettings();
+    	playArea = new Sprite();
+    	snakes = new Array<Snake>();
+    	grid = new Grid(settings["gridSize"],playAreaSize);
+    	 // create a background to visualize the play area
         background = new Shape();
         background.graphics.beginFill(0x333333);
-        background.graphics.drawRoundRect(0, 0, (stage.stageWidth/2), (stage.stageWidth/2), 10);
+        background.graphics.drawRoundRect(0, 0, playAreaSize, playAreaSize, 10);
         background.x = 0;
         background.y = 0;
         playArea.addChild(background);
 
-        playArea.width = settings["playAreaSize"];
-        playArea.height = settings["playAreaSize"];
-        playArea.x = (stage.stageWidth/2) - (settings["playAreaSize"]/3);
-        playArea.y = (stage.stageHeight/2) - (settings["playAreaSize"]/2);
+        playArea.width = playAreaSize;
+        playArea.height = playAreaSize;
+        playArea.x = playAreaSize - (playAreaSize/3);
+        playArea.y = stage.stageHeight/2 - playAreaSize/2;
+        stage.addChild(playArea); 
+
+        //playArea.addChild(grid);
+
+        var dir:Float = 1;
+        var startLocation = new Point(10,10);
+        for(s in 0...settings["numberOfPlayers"]){
+
+        	dir *= -1;
+        	trace(dir);
+
+        	if(settings["startOrientation"] == "hor"){
+        		snakes.push(new Snake(0x009900,new Point(startLocation.x,startLocation.y),settings["startOrientation"],dir,0,grid));
+        		startLocation.y += 5;
+        	}else{
+        		snakes.push(new Snake(0x009900,new Point(startLocation.x,startLocation.y),settings["startOrientation"],0,dir,grid));
+        		startLocation.x += 5;
+        	}
+        }
+
+        
+
+        gameMenu = new GameMenu(startGame, resetGame, stage.stageWidth, stage.stageHeight, playArea.x, playArea.y, playArea.height);
+        stage.addChild(gameMenu);
+    }
+    public function setupGame():Void{
+
+    	settings = Settings.getSettings();
+        snakes = new Array<Snake>();
+        currentItems = new List<Collectable>();
+        grid = new Grid(settings["gridSize"],playAreaSize);
+        gameOverText = new TextField();
+
+         // create a background to visualize the play area
+        background = new Shape();
+        background.graphics.beginFill(0x333333);
+        background.graphics.drawRoundRect(0, 0, playAreaSize, playAreaSize, 10);
+        background.x = 0;
+        background.y = 0;
+        playArea.addChild(background);
+
+        playArea.width = playAreaSize;
+        playArea.height = playAreaSize;
+        playArea.x = playAreaSize - (playAreaSize/3);
+        playArea.y = stage.stageHeight/2 - playAreaSize/2;
         stage.addChild(playArea); 
 
         playArea.addChild(grid);
+		
 
-        gameOverText.text = "Game Over";
+		gameOverText.text = "Game Over";
         gameOverText.setTextFormat(new TextFormat("Calibri",30,0x000000,true,false));
         gameOverText.autoSize = flash.text.TextFieldAutoSize.CENTER;
-        gameOverText.x = (stage.stageWidth/2);
+        gameOverText.x = playAreaSize;
         gameOverText.y = 10;
         gameOverText.alpha = 0;
         stage.addChild(gameOverText);
 
         var dir:Float = 1;
-        var startLocation = new Point(10,10);
+        var startLocation = new Point();
+        startLocation.x = Math.round(settings["gridSize"]/3);
+        startLocation.y = Math.round(settings["gridSize"]/2);
         for(s in 0...settings["numberOfPlayers"]){
 
         	dir *= -1;
@@ -199,25 +249,18 @@ class Game extends Sprite{
 
 	public function clearGame():Void{
 		
-		/*//remove EVERYTHING
-		playArea.removeChild(background);
-		playArea.removeChild(grid);
-
+		//remove EVERYTHING
 		for(s in snakes){
 			s.remove();
 		}
-		playArea.removeChild(grid);
+		for(i in currentItems){
+			grid.removeChild(i);
+		}
+
 		//delete EVERYTHING
-		gameTimer = null;
-		playArea = null;
         snakes = null;
         currentItems = null;
-        grid = null;
-        background = null;*/
-	}
-
-	public function resetGame():Void{
-
+        
 	}
 
 	public function play():Void{
@@ -240,12 +283,33 @@ class Game extends Sprite{
 
 	}
 
-	public function new(settings:Map<String, Dynamic>){
+	public function startGame():Void{
+		state = "starting";
+		resetGame();
+		play();
+	}
+
+	public function resetGame():Void{
+		isGameOver = false;
+		gameOverText.alpha = 0;
+		clearGame();
+		if(gameTimer != null){
+			gameTimer.stop();
+		}
+		setupGame();
+		
+
+		
+	}
+
+	public function new(stageWidth:Float){
 		
 		super();  
 		var self:Game = this;
-		//self.players = players;
-		self.settings = settings;
+		Settings.setDefaults();
+		
+		playAreaSize = stageWidth/2;
+		
 
 	}
 }

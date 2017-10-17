@@ -33,13 +33,13 @@ class Grid extends Sprite{
 				newGrid[r].push(newCell);
 
 				//drawing the grid for debug purposes
-				var cellBack:Shape = new Shape();
+				/*var cellBack:Shape = new Shape();
 		        cellBack.graphics.beginFill(0x993333);
 		        cellBack.graphics.drawRoundRect(0, 0, cellSize, cellSize, 10);
 		        cellBack.x = newCell.x * cellSize;
 		        cellBack.y = newCell.y * cellSize;
 
-		        this.addChild(cellBack);
+		        this.addChild(cellBack);*/ 
 
 			}
 		}
