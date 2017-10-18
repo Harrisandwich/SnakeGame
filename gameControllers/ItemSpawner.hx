@@ -15,8 +15,7 @@ class ItemSpawner{
 		location.x = (Math.round(Math.random() * (gridSize - 1)));
 		location.y = (Math.round(Math.random() * (gridSize - 1)));
 
-		trace(location.x + " " + location.y);
-		var newCollectable = new Collectable(0xFFFF00,size,location,value);
+		var newCollectable = new Collectable(color,size,location,value);
 
 		return newCollectable;
 	}

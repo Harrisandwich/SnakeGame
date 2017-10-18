@@ -12,7 +12,6 @@ class Segment extends Sprite{
 
 	private var color:UInt;
 	private var square:Shape;
-	private var onFlash:Bool;
 	public var size:Float;
 	public var location:Point; 
 	public var previousLocation:Point; 
@@ -24,20 +23,7 @@ class Segment extends Sprite{
 		self.x = self.location.x * size;
 		self.y = self.location.y * size;
 	}
-	public function moveHead(xd:Float, yd:Float){
-
-		var self:Segment = this;
-		var newLocation = new Point(location.x, location.y);
-		newLocation.x += xd;
-		newLocation.y += yd;
-
-		previousLocation = new Point(location.x, location.y);
-		location = new Point(newLocation.x, newLocation.y);
-
-		self.x = self.location.x * size;
-		self.y = self.location.y * size;
-	}
-
+	
 	public function move(newLocation:Point){
 
 		var self:Segment = this;
@@ -55,25 +41,6 @@ class Segment extends Sprite{
         square.graphics.drawRoundRect(0, 0, size, size, 10);
         square.x = 0;
         square.y = 0;
-	}
-
-	public function flash(){
-
-		if(onFlash){
-			square.graphics.beginFill(0x990099);
-	        square.graphics.drawRoundRect(0, 0, size, size, 10);
-	        square.x = 0;
-	        square.y = 0;
-	        onFlash = false;
-
-		}else{
-			square.graphics.beginFill(color);
-	        square.graphics.drawRoundRect(0, 0, size, size, 10);
-	        square.x = 0;
-	        square.y = 0;
-	        onFlash = true;
-		}
-		
 	}
 
 	public function new(color:UInt, posX:Float, posY:Float, size:Float){

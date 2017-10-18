@@ -36,19 +36,12 @@ class Main extends Sprite {
     function added(e) 
     {
         removeEventListener(Event.ADDED_TO_STAGE, added);
-        //stage.addEventListener(Event.RESIZE, resize);
         init();
     }
     
     static function main() {
 
-        //stage.align = flash.display.StageAlign.TOP_LEFT;
-        //stage.scaleMode = flash.display.StageScaleMode.NO_SCALE;
         Lib.current.addChild(new Main());
-    	
-
-        
-
     }
 
     

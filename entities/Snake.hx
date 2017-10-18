@@ -36,7 +36,6 @@ class Snake {
 			moveValid = false;
 
 		}
-		trace(dirY);
 		if(moveValid){
 			xd = dirX;
 			yd = dirY;
@@ -47,7 +46,11 @@ class Snake {
 	//move whole snake 
 	private function move():Void{
 
-		body[0].moveHead(xd,yd);
+		
+		var newLocation = new Point(body[0].location.x, body[0].location.y);
+		newLocation.x += xd;
+		newLocation.y += yd;
+		body[0].move(newLocation);
 		//for each segment in the tail
 		for(s in 0...body.length){
 
@@ -104,16 +107,6 @@ class Snake {
 		}
 	}
 
-	public function flash():Void{
-		
-		for(b in body){
-			if(b.isDead){
-				b.flash();
-			}	
-		}
-		
-	}
-
 	public function animate():Void {
 		
 		if(!isDead){
@@ -130,12 +123,10 @@ class Snake {
 		}
 		removed = true;
 	}
-	public function new(color:UInt, headLocation:Point, orientation:String, startDirX:Float, startDirY:Float, grid:Grid){
+	public function new(color:UInt, startSize:UInt, headLocation:Point, orientation:String, startDirX:Float, startDirY:Float, grid:Grid){
 		
 		
 		var self:Snake = this;
-		//move to param
-		var startSize:UInt = 4;
 		self.size = grid.cellSize;
 		self.body = new Array<Segment>();
 		self.color = color;
@@ -143,23 +134,12 @@ class Snake {
 		self.yd = startDirY;
 		self.isDead = false;
 
-		//getting long...move to func?
-		//or change way this is laid out		
-
 		if(orientation == "hor"){
-
-			
-
 			if(startDirX == -1){
-
-				
 				for(s in 0...startSize){
-				
 					var seg:Float = headLocation.x + s;
 					self.body.push(new Segment(color, seg, headLocation.y, size));
 				}
-				
-			
 			}else{
 				
 				for(s in 0...startSize){
@@ -192,8 +172,12 @@ class Snake {
 				}
 			}
 		}
+
+		//grab the add and remove child functions for later so 
+		//sneks can do it themselves 
 		self.addToGrid = grid.addChild;
 		self.removeFromGrid = grid.removeChild;
+		
 		for(s in self.body){
 			self.addToGrid(s);
 		}

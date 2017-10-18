@@ -23,15 +23,15 @@ import gameUI.GameMenu;
 import gameControllers.ItemSpawner;
 import gameControllers.ComputerPlayer;
 
+import utilities.Constants;
+
 class Game extends Sprite{
 
 	//Data
 	private var settings:Map<String, Dynamic>;
 	private var state:String;
 	private var isGameOver:Bool;
-    private var playerColors:Array<UInt> = [0x009900,0x009999];
     private var playAreaSize:Float;
-
 
 	//Mechanics
 	private var input:Input;
@@ -50,9 +50,10 @@ class Game extends Sprite{
 	private var currentItems:List<Collectable>;
 
 	private function checkCollisions():Void{
+       
         for(s in snakes){
+
             var head:Point = s.getHeadLocation();
-            
 
             for(i in currentItems){
                 if(head.x == i.location.x 
@@ -83,11 +84,8 @@ class Game extends Sprite{
                     if(head.x == os.body[seg].location.x 
                         && head.y == os.body[seg].location.y){
                         
-                        
-                        
                         s.isDead = true;
                         
-
                     }
                 }
                 
@@ -118,13 +116,12 @@ class Game extends Sprite{
 
         if(!isGameOver){
 
-
 	        if(currentItems.length < settings["maxItems"]){
 	            var numberOfItemsMissing:UInt = settings["maxItems"] - currentItems.length;
 	            for(i in 0...numberOfItemsMissing){
 
 
-	                var newItem = ItemSpawner.spawnItem(0xFFFF00,grid.cellSize,settings["gridSize"],100);
+	                var newItem = ItemSpawner.spawnItem(Constants.ITEM_COLOR,grid.cellSize,settings["gridSize"],Constants.ITEM_VALUE);
                     var isItemOnSnake:Bool = true;
                     while(isItemOnSnake){
                         for(s in snakes){
@@ -137,7 +134,7 @@ class Game extends Sprite{
                             }
                             
                         }
-                        newItem = ItemSpawner.spawnItem(0xFFFF00,grid.cellSize,settings["gridSize"],100);
+                        newItem = ItemSpawner.spawnItem(Constants.ITEM_COLOR,grid.cellSize,settings["gridSize"],Constants.ITEM_VALUE);
                         
                     }
 	                currentItems.add(newItem);
@@ -146,7 +143,6 @@ class Game extends Sprite{
 	            
 	        }
 
-	        
 	        for(s in snakes){
 	            s.animate();
 	        }
@@ -155,11 +151,54 @@ class Game extends Sprite{
 	    }
 
     }
-    private function everyFrame(evt:Event):Void {
-        
-        //snake.draw();
+   
+    private function drawBackground(){
+        background = new Shape();
+        background.graphics.beginFill(Constants.BACKGROUND_COLOR);
+        background.graphics.drawRoundRect(0, 0, playAreaSize, playAreaSize, 10);
+        background.x = 0;
+        background.y = 0;
     }
+    private function setPlayAreaDimensions(){
+        playArea.width = playAreaSize;
+        playArea.height = playAreaSize;
+        playArea.x = playAreaSize - (playAreaSize/3);
+        playArea.y = stage.stageHeight/2 - playAreaSize/2;
+    }
+    private function createSnakes(){
+        var dir:Float = 1;
+        var startLocation = new Point();
+        startLocation.x = Math.round(settings["gridSize"]/2) - Constants.SNAKE_START_SIZE/2;
+        startLocation.y = Math.round(settings["gridSize"]/3);
+        for(s in 0...settings["numberOfPlayers"]){
 
+            dir *= -1;
+            trace(dir);
+            var newSnake:Snake;
+            if(settings["startOrientation"] == "hor"){
+                newSnake = new Snake(Constants.PLAYER_COLORS[s], Constants.SNAKE_START_SIZE,new Point(startLocation.x,startLocation.y),settings["startOrientation"],dir,0,grid);
+                snakes.push(newSnake);
+                startLocation.y += 10;
+            }else{
+                newSnake = new Snake(Constants.PLAYER_COLORS[s], Constants.SNAKE_START_SIZE,new Point(startLocation.x,startLocation.y),settings["startOrientation"],0,dir,grid);
+                snakes.push(newSnake);
+                startLocation.x += 10;
+            }
+            if(settings["vsComputer"] && s == 1){
+
+                computerPlayer = new ComputerPlayer(settings["controls"][s],newSnake);
+
+            }
+
+            var playerControls:Map<String, String> = settings["controls"][s];
+            Input.setAction(playerControls["right"], newSnake.right);
+            Input.setAction(playerControls["left"], newSnake.left);
+            Input.setAction(playerControls["up"], newSnake.up);
+            Input.setAction(playerControls["down"], newSnake.down);
+            
+            
+        }
+    }
     public function init():Void{
 
     	settings = Settings.getSettings();
@@ -167,40 +206,13 @@ class Game extends Sprite{
     	snakes = new Array<Snake>();
     	grid = new Grid(settings["gridSize"],playAreaSize);
     	 // create a background to visualize the play area
-        background = new Shape();
-        background.graphics.beginFill(0x333333);
-        background.graphics.drawRoundRect(0, 0, playAreaSize, playAreaSize, 10);
-        background.x = 0;
-        background.y = 0;
+        drawBackground();
         playArea.addChild(background);
 
-        playArea.width = playAreaSize;
-        playArea.height = playAreaSize;
-        playArea.x = playAreaSize - (playAreaSize/3);
-        playArea.y = stage.stageHeight/2 - playAreaSize/2;
+        setPlayAreaDimensions();
         stage.addChild(playArea); 
 
-        //playArea.addChild(grid);
-
-        var dir:Float = 1;
-        var startLocation = new Point(10,10);
-        for(s in 0...settings["numberOfPlayers"]){
-
-        	dir *= -1;
-        	trace(dir);
-            //move later
-            var playerColors:Array<UInt> = [0x009900,0x000099];
-
-        	if(settings["startOrientation"] == "hor"){
-        		snakes.push(new Snake(playerColors[s],new Point(startLocation.x,startLocation.y),settings["startOrientation"],dir,0,grid));
-        		startLocation.y += 5;
-        	}else{
-        		snakes.push(new Snake(playerColors[s],new Point(startLocation.x,startLocation.y),settings["startOrientation"],0,dir,grid));
-        		startLocation.x += 5;
-        	}
-        }
-
-        
+        createSnakes();
 
         gameMenu = new GameMenu(startGame, resetGame, stage.stageWidth, stage.stageHeight, playArea.x, playArea.y, playArea.height);
         stage.addChild(gameMenu);
@@ -214,17 +226,10 @@ class Game extends Sprite{
         gameOverText = new TextField();
 
          // create a background to visualize the play area
-        background = new Shape();
-        background.graphics.beginFill(0x333333);
-        background.graphics.drawRoundRect(0, 0, playAreaSize, playAreaSize, 10);
-        background.x = 0;
-        background.y = 0;
+        drawBackground();
         playArea.addChild(background);
 
-        playArea.width = playAreaSize;
-        playArea.height = playAreaSize;
-        playArea.x = playAreaSize - (playAreaSize/3);
-        playArea.y = stage.stageHeight/2 - playAreaSize/2;
+        setPlayAreaDimensions();
         stage.addChild(playArea); 
 
         playArea.addChild(grid);
@@ -237,42 +242,9 @@ class Game extends Sprite{
         gameOverText.y = 10;
         gameOverText.alpha = 0;
         stage.addChild(gameOverText);
-
-        var dir:Float = 1;
-        var startLocation = new Point();
-        startLocation.x = Math.round(settings["gridSize"]/3);
-        startLocation.y = Math.round(settings["gridSize"]/2);
-        for(s in 0...settings["numberOfPlayers"]){
-
-        	dir *= -1;
-        	trace(dir);
-            var newSnake:Snake;
-        	if(settings["startOrientation"] == "hor"){
-                newSnake = new Snake(playerColors[s],new Point(startLocation.x,startLocation.y),settings["startOrientation"],dir,0,grid);
-        		snakes.push(newSnake);
-        		startLocation.y += 5;
-        	}else{
-                newSnake = new Snake(playerColors[s],new Point(startLocation.x,startLocation.y),settings["startOrientation"],0,dir,grid);
-        		snakes.push(newSnake);
-        		startLocation.x += 5;
-        	}
-        	if(settings["vsComputer"] && s == 1){
-
-                computerPlayer = new ComputerPlayer(settings["controls"][s],newSnake);
-
-            }
-
-            var playerControls:Map<String, String> = settings["controls"][s];
-            Input.setAction(playerControls["right"], newSnake.right);
-            Input.setAction(playerControls["left"], newSnake.left);
-            Input.setAction(playerControls["up"], newSnake.up);
-            Input.setAction(playerControls["down"], newSnake.down);
-            
-        	
-        }
+        createSnakes();
 
         // Game loop
-        //stage.addEventListener(Event.ENTER_FRAME, everyFrame); //Do I need?
         stage.addEventListener(KeyboardEvent.KEY_DOWN, Input.keyDown);
         stage.addEventListener(KeyboardEvent.KEY_UP, Input.keyUp);
 
@@ -287,8 +259,6 @@ class Game extends Sprite{
             computerPlayer.stopPlaying();
 
         }
-        
-
 		//remove EVERYTHING
 		for(s in snakes){
             if(!s.removed){
