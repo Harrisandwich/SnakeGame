@@ -1,3 +1,8 @@
+/*
+    Author: Harrison Hutcheon
+    Date: October 2017
+*/
+
 package gameUI;
 
 import flash.display.DisplayObject;

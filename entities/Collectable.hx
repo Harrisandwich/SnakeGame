@@ -1,3 +1,8 @@
+/*
+	Author: Harrison Hutcheon
+	Date: October 2017
+*/
+
 package entities;
 
 import flash.geom.Point;
@@ -16,7 +21,7 @@ class Collectable extends Sprite implements ICollectable{
 	public var location:Point;
 	private var shape:Shape;
 	
-
+	//draw the rounded rect of the collectable 
 	public function draw():Void{
 
 		var self:Collectable = this;
@@ -25,7 +30,7 @@ class Collectable extends Sprite implements ICollectable{
         shape.x = 0;
         shape.y = 0;
 	}
-
+	//set the collectable fields
 	public function new(color,size,location,value):Void{
 		super();
 		var self:Collectable = this;

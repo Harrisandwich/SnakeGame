@@ -1,3 +1,8 @@
+/*
+	Author: Harrison Hutcheon
+	Date: October 2017
+*/
+
 package gameControllers;
 
 import haxe.Timer;
@@ -24,12 +29,12 @@ class ComputerPlayer{
 
 
 	private function outputCommand():Void{
-		
+		//if snake is not dead
 		if(!snake.isDead){
 			var headLocation:Point = snake.getHeadLocation();
 			var direction:Point = snake.getDirection();
 			var command:String;
-
+			//set next movement based on item position
 			if(headLocation.x > currentItems.first().location.x && direction.x != 1 ){
 				command = controls["left"];
 			}else if(headLocation.x < currentItems.first().location.x && direction.x != -1){
@@ -42,11 +47,14 @@ class ComputerPlayer{
 				command = controls["down"];
 			}  
 			
+			//send fake key press to input controller with next move
 			var fakeKeyPress = new KeyboardEvent(KeyboardEvent.KEY_DOWN,true,false,Keyboard.keyMap[command].keyCode,Keyboard.keyMap[command].keyCode);
 			Input.keyDown(fakeKeyPress);
 		}
 		
 	}
+
+	//start decision timer and set computer player state
 	public function startPlaying(items:List<entities.Collectable>):Void{
 		isPlaying = true;
 		currentItems = items;
@@ -56,7 +64,6 @@ class ComputerPlayer{
 	public function stopPlaying():Void{
 		isPlaying = false;
 		decisionTimer.stop();
-		//decisionTimer = null;
 	}
 	public function new(controls:Map<String, String>, snake:Snake){
 		var self:ComputerPlayer = this;

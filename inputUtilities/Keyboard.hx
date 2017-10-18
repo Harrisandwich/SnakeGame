@@ -4,12 +4,15 @@
 */
 
 package inputUtilities;
+
+
 import inputUtilities.Key;
 
 
 
 class Keyboard {
 
+    //map strings mapped to keycodes/key objects
 	public static var keyMap:Map<String, Key> =[
             "up_arrow" => new Key(38),
     		"down_arrow" => new Key(40),

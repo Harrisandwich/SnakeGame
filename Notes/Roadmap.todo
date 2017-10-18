@@ -18,32 +18,25 @@ Features:
   ✔ Rule fixes @done (17-10-18 08:46)
   ☐ Player modularity
     ☐ Player Controller
-    ☐ Computer Player
+    ✔ Computer Player @done (17-10-18 17:12)
    
 
   
 
 
 Polish(Code):
-  ☐ Enum for keys 
-  ☐ Remove magic numbers
+  ✔ Remove magic numbers @done (17-10-18 17:12)
   ✔ Move game stuff in main to game object @done (17-10-18 08:48)
-  ☐ Better comments 
-  ☐ Tidy up Game class
-  ☐ Incorperate lambdas?
+  ✔ Better comments @done (17-10-18 17:13)
+  ✔ Tidy up Game class @done (17-10-18 17:12)
 
 Polish(Feature):
-  ☐ Player Colors
-  ☐ Sprint ability?
-  ☐ Allow user to change key bindings
+  ✔ Player Colors @done (17-10-18 17:13)
 
 Test:
   ☐ Functionality
   ☐ Screen Sizes
 
 Bugs:
-  ☐ Snakes eat their own heads. Easy fix
+  ✔ Snakes eat their own heads. Easy fix @done (17-10-18 17:13)
   
-Out of scope:
-  ☐ Lives?
-  ☐ Web Socket? :D :D 

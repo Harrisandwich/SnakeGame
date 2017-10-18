@@ -1,16 +1,26 @@
+/*
+    Author: Harrison Hutcheon
+    Date: October 2017
+*/
+
 package gameControllers;
 
+/*
+    game settings live here
+*/  
+
+import utilities.Constants;
 class Settings{
 
 	private static var settings:Map<String, Dynamic>;
 
 	public static function setDefaults():Map<String, Dynamic>{
 		settings = [
-            "gridSize" => 40,
+            "gridSize" => Constants.AREA_MED,
             "numberOfPlayers" => 1,
             "startOrientation" => "hor",
             "maxItems" => 1,
-            "speed" => 500,
+            "speed" => Constants.SPEED_NORMAL,
             "vsComputer" => false,
             "controls" => [
                 [

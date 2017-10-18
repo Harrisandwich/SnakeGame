@@ -1,3 +1,8 @@
+/*
+	Author: Harrison Hutcheon
+	Date: October 2017
+*/
+
 package gameControllers;
 
 import flash.geom.Point;
@@ -8,7 +13,7 @@ import entities.Collectable;
 class ItemSpawner{
 
 
-	//possibly extend to take specifics for item types 
+	//generate a new item in a random location
 	public static function spawnItem(color:UInt, size:Float, gridSize:UInt, value:UInt):Collectable{
 		
 		var location = new Point();

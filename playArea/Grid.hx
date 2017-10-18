@@ -16,7 +16,6 @@ class Grid extends Sprite{
 		var newGrid:Array<Array<Cell>> = new Array();
 		cellSize = playAreaSize/size;
 
-		trace("cell size: " + cellSize);
 		for(r in 0...size){
 			var newRow:Array<Cell> = new Array();
 			newGrid.push(newRow);

@@ -1,3 +1,8 @@
+/*
+    Author: Harrison Hutcheon
+    Date: October 2017
+*/
+
 package gameUI;
 
 import flash.display.DisplayObject;
@@ -68,7 +73,7 @@ class CustomSimpleButton extends Sprite {
     }
 
     private function clickEvent(e:MouseEvent){
-        trace("Clicked!");
+        
         buttonToggle(e.target);
     }
 }

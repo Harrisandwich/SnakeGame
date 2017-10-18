@@ -11,14 +11,15 @@ import gameUI.CustomSimpleButton;
 
 import gameControllers.Settings;
 
+import utilities.Constants;
+
 class GameMenu extends Sprite{
 	
 	private var background:Shape;
 
 	//labels
-	private var numberOfPlayers_Label:TextField;
-	private var playAreaSize_Label:TextField;
-	private var gameSpeed_Label:TextField;
+	private var onePlayerControlsLabel:TextField;
+	private var twoPlayerControlsLabel:TextField;
 
 	//buttons
 	private var play_Button:CustomSimpleButton;
@@ -36,42 +37,44 @@ class GameMenu extends Sprite{
 	
 
 	private function setPlayers(players:UInt):Void{
-		trace("Set players");
-
 		Settings.setProperty("numberOfPlayers", players);
-
 	}
 
 	private function setVsComputer(vsComputer:Bool):Void{
-		trace("Set players");
-
 		Settings.setProperty("vsComputer", vsComputer);
-
 	}
 
 	private function setArea(size:UInt):Void{
-		trace("Set size");
-
 		Settings.setProperty("gridSize", size);
-
-
 	}
 
 	private function setSpeed(speed:UInt):Void{
-		trace("Set speed");
 		Settings.setProperty("speed", speed);
-
 	}
 
 	public function new(startGame:Void->Void, resetGame:Void->Void, stageWidth:Float, stageHeight:Float, playAreaX:Float, playAreaY:Float, playAreaHeight:Float){
 
 		super();
-		
+		//MASSIVE MENU SETUP ------------------------------------------------------------------------------------------
 		background = new Shape();
         background.graphics.beginFill(0x333333);
         background.graphics.drawRoundRect(0, 0, (stageWidth/4), playAreaHeight, 10);
         
         this.addChild(background);
+
+        onePlayerControlsLabel = new TextField();
+        onePlayerControlsLabel.text = "1P: Up, Down, Left, Right";
+        onePlayerControlsLabel.setTextFormat(new TextFormat("Calibri",20,0xFFFFFF,true,false));
+        onePlayerControlsLabel.autoSize = flash.text.TextFieldAutoSize.CENTER;
+        onePlayerControlsLabel.x = this.width/2 - onePlayerControlsLabel.width/2;
+        onePlayerControlsLabel.y = 400;
+
+		twoPlayerControlsLabel = new TextField();
+        twoPlayerControlsLabel.text = "2P: W, S, A, D";
+        twoPlayerControlsLabel.setTextFormat(new TextFormat("Calibri",20,0xFFFFFF,true,false));
+        twoPlayerControlsLabel.autoSize = flash.text.TextFieldAutoSize.CENTER;
+        twoPlayerControlsLabel.x = this.width/2 - twoPlayerControlsLabel.width/2;
+        twoPlayerControlsLabel.y = 450;
 
         play_Button = new CustomSimpleButton("Play", false);
         play_Button.x = this.width/2 - play_Button.width/2;
@@ -118,6 +121,9 @@ class GameMenu extends Sprite{
         setSpeedToFast_Button.y = 300;
 
 
+        this.addChild(onePlayerControlsLabel);
+        this.addChild(twoPlayerControlsLabel);
+
         this.addChild(play_Button);
         this.addChild(setPlayersToOne_Button);
         this.addChild(setPlayersToTwo_Button);
@@ -133,8 +139,10 @@ class GameMenu extends Sprite{
 
         this.x = playAreaX - background.width - 40;
         this.y = playAreaY;
+        //END OF MASSIVE MENU SETUP ------------------------------------------------------------------------------------------
 
 
+        //map buttons to actions
         play_Button.addEventListener(MouseEvent.CLICK, function(event:MouseEvent){
         	startGame(); 
         });
@@ -142,6 +150,8 @@ class GameMenu extends Sprite{
         setPlayersToOne_Button.addEventListener(MouseEvent.CLICK, function(event:MouseEvent){
         	if(setPlayersToTwo_Button.buttonState == true){
 				setPlayersToTwo_Button.buttonToggle(setPlayersToTwo_Button.button);
+			}else if(setVsComputer_Button.buttonState == true){
+				setVsComputer_Button.buttonToggle(setVsComputer_Button.button);
 			}
         	setPlayers(1);
         	setVsComputer(false);
@@ -151,6 +161,8 @@ class GameMenu extends Sprite{
         	
         	if(setPlayersToOne_Button.buttonState == true){
 				setPlayersToOne_Button.buttonToggle(setPlayersToOne_Button.button);
+			}else if(setVsComputer_Button.buttonState == true){
+				setVsComputer_Button.buttonToggle(setVsComputer_Button.button);
 			}
         	setPlayers(2);
         	setVsComputer(false);
@@ -176,7 +188,7 @@ class GameMenu extends Sprite{
 			}else if(setPlayAreaToLarge_Button.buttonState == true){
 				setPlayAreaToLarge_Button.buttonToggle(setPlayAreaToLarge_Button.button);
 			}
-        	setArea(20);
+        	setArea(Constants.AREA_SMALL);
         	resetGame();
         });
         setPlayAreaToMedium_Button.addEventListener(MouseEvent.CLICK, function(event:MouseEvent){
@@ -185,7 +197,7 @@ class GameMenu extends Sprite{
 			}else if(setPlayAreaToLarge_Button.buttonState == true){
 				setPlayAreaToLarge_Button.buttonToggle(setPlayAreaToLarge_Button.button);
 			}
-        	setArea(40);
+        	setArea(Constants.AREA_MED);
         	resetGame();
         });
         setPlayAreaToLarge_Button.addEventListener(MouseEvent.CLICK, function(event:MouseEvent){
@@ -194,7 +206,7 @@ class GameMenu extends Sprite{
 			}else if(setPlayAreaToMedium_Button.buttonState == true){
 				setPlayAreaToMedium_Button.buttonToggle(setPlayAreaToMedium_Button.button);
 			}
-        	setArea(80);
+        	setArea(Constants.AREA_LARGE);
         	resetGame();
         });
 
@@ -205,7 +217,7 @@ class GameMenu extends Sprite{
 			}else if(setSpeedToFast_Button.buttonState == true){
 				setSpeedToFast_Button.buttonToggle(setSpeedToFast_Button.button);
 			}
-        	setSpeed(200);
+        	setSpeed(Constants.SPEED_SLOW);
         	resetGame();
         });
         setSpeedToNormal_Button.addEventListener(MouseEvent.CLICK, function(event:MouseEvent){
@@ -214,7 +226,7 @@ class GameMenu extends Sprite{
 			}else if(setSpeedToFast_Button.buttonState == true){
 				setSpeedToFast_Button.buttonToggle(setSpeedToFast_Button.button);
 			}
-        	setSpeed(100);
+        	setSpeed(Constants.SPEED_NORMAL);
         	resetGame();
         });
         setSpeedToFast_Button.addEventListener(MouseEvent.CLICK, function(event:MouseEvent){
@@ -224,7 +236,7 @@ class GameMenu extends Sprite{
 			}else if(setSpeedToNormal_Button.buttonState == true){
 				setSpeedToNormal_Button.buttonToggle(setSpeedToNormal_Button.button);
 			}
-        	setSpeed(50);
+        	setSpeed(Constants.SPEED_FAST);
         	resetGame();
         });
         

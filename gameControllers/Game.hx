@@ -1,3 +1,8 @@
+/*
+    Author: Harrison Hutcheon
+    Date: October 2017
+*/
+
 package gameControllers;
 
 import haxe.Timer;
@@ -54,7 +59,7 @@ class Game extends Sprite{
         for(s in snakes){
 
             var head:Point = s.getHeadLocation();
-
+            //check if collide with collectable
             for(i in currentItems){
                 if(head.x == i.location.x 
                 && head.y == i.location.y){
@@ -65,6 +70,7 @@ class Game extends Sprite{
                 }
             }
 
+            //check if collide with wall
             if(head.x < 0 
                 || head.x >= settings["gridSize"]
                 || head.y < 0
@@ -72,10 +78,13 @@ class Game extends Sprite{
 
             	s.isDead = true;
             }
+
+            //check if collide with self or other snake
             for(os in snakes){
               
                 for(seg in 0...os.body.length){
                 
+                    //if its checking itself, ignore head collision check or it will always die
                     if(os == s){
                         if(seg == 0) continue;
                     }
@@ -98,6 +107,7 @@ class Game extends Sprite{
         
         var deadSnakes:Int = 0;
 
+        //sweep up dead snakes
         for(s in snakes){
             if(s.isDead){
                 s.remove();
@@ -110,12 +120,15 @@ class Game extends Sprite{
             }
             
         }
+
+        //end game if all snakes are dead
         if(snakes.length == 0){
             gameOver();
         }
-
+        //if game not over
         if(!isGameOver){
 
+            //check if items should spawn
 	        if(currentItems.length < settings["maxItems"]){
 	            var numberOfItemsMissing:UInt = settings["maxItems"] - currentItems.length;
 	            for(i in 0...numberOfItemsMissing){
@@ -123,6 +136,8 @@ class Game extends Sprite{
 
 	                var newItem = ItemSpawner.spawnItem(Constants.ITEM_COLOR,grid.cellSize,settings["gridSize"],Constants.ITEM_VALUE);
                     var isItemOnSnake:Bool = true;
+
+                    //get a new item until a valid item is created (no contact with snakes)
                     while(isItemOnSnake){
                         for(s in snakes){
                             for(seg in s.body){
@@ -142,7 +157,7 @@ class Game extends Sprite{
 	            }
 	            
 	        }
-
+            //animate snakes
 	        for(s in snakes){
 	            s.animate();
 	        }
@@ -151,7 +166,7 @@ class Game extends Sprite{
 	    }
 
     }
-   
+    //draw background for play area   
     private function drawBackground(){
         background = new Shape();
         background.graphics.beginFill(Constants.BACKGROUND_COLOR);
@@ -159,12 +174,15 @@ class Game extends Sprite{
         background.x = 0;
         background.y = 0;
     }
+    //set up play area
     private function setPlayAreaDimensions(){
         playArea.width = playAreaSize;
         playArea.height = playAreaSize;
         playArea.x = playAreaSize - (playAreaSize/3);
         playArea.y = stage.stageHeight/2 - playAreaSize/2;
     }
+
+    //generate snakes
     private function createSnakes(){
         var dir:Float = 1;
         var startLocation = new Point();
@@ -173,8 +191,9 @@ class Game extends Sprite{
         for(s in 0...settings["numberOfPlayers"]){
 
             dir *= -1;
-            trace(dir);
+            
             var newSnake:Snake;
+            //set snake positions
             if(settings["startOrientation"] == "hor"){
                 newSnake = new Snake(Constants.PLAYER_COLORS[s], Constants.SNAKE_START_SIZE,new Point(startLocation.x,startLocation.y),settings["startOrientation"],dir,0,grid);
                 snakes.push(newSnake);
@@ -184,12 +203,13 @@ class Game extends Sprite{
                 snakes.push(newSnake);
                 startLocation.x += 10;
             }
+            //set up computer player if enabled
             if(settings["vsComputer"] && s == 1){
 
                 computerPlayer = new ComputerPlayer(settings["controls"][s],newSnake);
 
             }
-
+            //map controls to input controller
             var playerControls:Map<String, String> = settings["controls"][s];
             Input.setAction(playerControls["right"], newSnake.right);
             Input.setAction(playerControls["left"], newSnake.left);

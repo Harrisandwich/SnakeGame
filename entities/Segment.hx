@@ -1,3 +1,8 @@
+/*
+	Author: Harrison Hutcheon
+	Date: October 2017
+*/
+
 package entities;
 
 import flash.geom.Point;
@@ -17,13 +22,14 @@ class Segment extends Sprite{
 	public var previousLocation:Point; 
 	public var isDead:Bool;
 
-
+	//take the grid position and translate it to a position within flash
 	private function setWorldPos():Void{
 		var self:Segment = this;
 		self.x = self.location.x * size;
 		self.y = self.location.y * size;
 	}
 	
+	//move the segment to a new location
 	public function move(newLocation:Point){
 
 		var self:Segment = this;
@@ -31,10 +37,9 @@ class Segment extends Sprite{
 		previousLocation = new Point(location.x, location.y);
 		location = new Point(newLocation.x, newLocation.y);
 
-		self.x = self.location.x * size;
-		self.y = self.location.y * size;
+		setWorldPos();
 	}
-
+	//draw the graphical representation of the segment
 	public function draw(){
 
 		square.graphics.beginFill(color);
@@ -42,7 +47,7 @@ class Segment extends Sprite{
         square.x = 0;
         square.y = 0;
 	}
-
+	//set the properties of the segment
 	public function new(color:UInt, posX:Float, posY:Float, size:Float){
 		super();
 

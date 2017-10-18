@@ -11,11 +11,13 @@ import inputUtilities.Keyboard;
 
 class Input{
 
+    //map action to key
     public static function setAction(id:String, action:Void->Void){
     	Keyboard.setAction(id, action);
     	
     }
     
+    //get key down event
     public static function keyDown(event:KeyboardEvent){
         
     	var key:Key = Keyboard.getKeyByCode(event.keyCode);
@@ -24,7 +26,7 @@ class Input{
             key.action();
         }   
     }
-
+    //get key up event
     public static function keyUp(event:KeyboardEvent){
     	
     	var key:Key = Keyboard.getKeyByCode(event.keyCode);
