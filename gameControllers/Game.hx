@@ -21,6 +21,7 @@ import entities.Collectable;
 import gameUI.GameMenu;
 
 import gameControllers.ItemSpawner;
+import gameControllers.ComputerPlayer;
 
 class Game extends Sprite{
 
@@ -44,7 +45,7 @@ class Game extends Sprite{
 	private var playArea:Sprite;
 	private var background:Shape;
 	private var grid:Grid;
-	//private var players:Array<Player>;
+	private var computerPlayer:ComputerPlayer;
 	private var snakes:Array<Snake>;
 	private var currentItems:List<Collectable>;
 
@@ -245,20 +246,29 @@ class Game extends Sprite{
 
         	dir *= -1;
         	trace(dir);
-
+            var newSnake:Snake;
         	if(settings["startOrientation"] == "hor"){
-        		snakes.push(new Snake(playerColors[s],new Point(startLocation.x,startLocation.y),settings["startOrientation"],dir,0,grid));
+                newSnake = new Snake(playerColors[s],new Point(startLocation.x,startLocation.y),settings["startOrientation"],dir,0,grid);
+        		snakes.push(newSnake);
         		startLocation.y += 5;
         	}else{
-        		snakes.push(new Snake(playerColors[s],new Point(startLocation.x,startLocation.y),settings["startOrientation"],0,dir,grid));
+                newSnake = new Snake(playerColors[s],new Point(startLocation.x,startLocation.y),settings["startOrientation"],0,dir,grid);
+        		snakes.push(newSnake);
         		startLocation.x += 5;
         	}
+        	if(settings["vsComputer"] && s == 1){
+
+                computerPlayer = new ComputerPlayer(settings["controls"][s],newSnake);
+
+            }
+
+            var playerControls:Map<String, String> = settings["controls"][s];
+            Input.setAction(playerControls["right"], newSnake.right);
+            Input.setAction(playerControls["left"], newSnake.left);
+            Input.setAction(playerControls["up"], newSnake.up);
+            Input.setAction(playerControls["down"], newSnake.down);
+            
         	
-        	var playerControls:Map<String, String> = settings["controls"][s];
-        	Input.setAction(playerControls["right"], snakes[s].right);
-	        Input.setAction(playerControls["left"], snakes[s].left);
-	        Input.setAction(playerControls["up"], snakes[s].up);
-	        Input.setAction(playerControls["down"], snakes[s].down);
         }
 
         // Game loop
@@ -272,6 +282,13 @@ class Game extends Sprite{
 
 	public function clearGame():Void{
 		
+        if(settings["vsComputer"] && computerPlayer != null && computerPlayer.isPlaying){
+            
+            computerPlayer.stopPlaying();
+
+        }
+        
+
 		//remove EVERYTHING
 		for(s in snakes){
             if(!s.removed){
@@ -293,6 +310,11 @@ class Game extends Sprite{
 		state = "play";
 		gameTimer = new Timer(settings["speed"]);
         gameTimer.run = gameLoop;
+
+        if(settings["vsComputer"]){
+            computerPlayer.startPlaying(currentItems);
+        }
+
 	}
 
 	public function pause():Void{
@@ -303,7 +325,9 @@ class Game extends Sprite{
 	public function gameOver():Void{
 		isGameOver = true;
 		gameOverText.alpha = 1;
-
+        if(settings["vsComputer"]){
+            computerPlayer.stopPlaying();
+        }
 		stage.removeEventListener(KeyboardEvent.KEY_DOWN, Input.keyDown);
         stage.removeEventListener(KeyboardEvent.KEY_UP, Input.keyUp);
 

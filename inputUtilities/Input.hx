@@ -15,7 +15,7 @@ class Input{
     	Keyboard.setAction(id, action);
     	
     }
-
+    
     public static function keyDown(event:KeyboardEvent){
         
     	var key:Key = Keyboard.getKeyByCode(event.keyCode);

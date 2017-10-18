@@ -24,6 +24,7 @@ class GameMenu extends Sprite{
 	private var play_Button:CustomSimpleButton;
 	private var setPlayersToOne_Button:CustomSimpleButton;
 	private var setPlayersToTwo_Button:CustomSimpleButton;
+	private var setVsComputer_Button:CustomSimpleButton;
 	private var setPlayAreaToSmall_Button:CustomSimpleButton;
 	private var setPlayAreaToMedium_Button:CustomSimpleButton;
 	private var setPlayAreaToLarge_Button:CustomSimpleButton;
@@ -38,6 +39,13 @@ class GameMenu extends Sprite{
 		trace("Set players");
 
 		Settings.setProperty("numberOfPlayers", players);
+
+	}
+
+	private function setVsComputer(vsComputer:Bool):Void{
+		trace("Set players");
+
+		Settings.setProperty("vsComputer", vsComputer);
 
 	}
 
@@ -70,13 +78,18 @@ class GameMenu extends Sprite{
         play_Button.y = 10;
         
 		setPlayersToOne_Button = new CustomSimpleButton("1P", true);
-		setPlayersToOne_Button.x = this.width/3 - setPlayersToOne_Button.width/2;
+		setPlayersToOne_Button.x = 0;
         setPlayersToOne_Button.y = 100;
         setPlayersToOne_Button.buttonToggle(setPlayersToOne_Button.button);
 
 		setPlayersToTwo_Button = new CustomSimpleButton("2P", true);
-		setPlayersToTwo_Button.x = ((this.width/3) * 2) - setPlayersToOne_Button.width/2;
+		setPlayersToTwo_Button.x = this.width/2 - setPlayersToTwo_Button.width/2;
         setPlayersToTwo_Button.y = 100;
+
+        setVsComputer_Button = new CustomSimpleButton("vsCPU", true);
+		setVsComputer_Button.x = this.width/2 + setVsComputer_Button.width/2;
+        setVsComputer_Button.y = 100;
+        
 
 		setPlayAreaToSmall_Button = new CustomSimpleButton("Small", true);
 		setPlayAreaToSmall_Button.x = 0;
@@ -108,6 +121,7 @@ class GameMenu extends Sprite{
         this.addChild(play_Button);
         this.addChild(setPlayersToOne_Button);
         this.addChild(setPlayersToTwo_Button);
+        this.addChild(setVsComputer_Button);
 
         this.addChild(setPlayAreaToSmall_Button);
         this.addChild(setPlayAreaToMedium_Button);
@@ -130,6 +144,7 @@ class GameMenu extends Sprite{
 				setPlayersToTwo_Button.buttonToggle(setPlayersToTwo_Button.button);
 			}
         	setPlayers(1);
+        	setVsComputer(false);
         	resetGame();
         });
         setPlayersToTwo_Button.addEventListener(MouseEvent.CLICK, function(event:MouseEvent){
@@ -138,6 +153,19 @@ class GameMenu extends Sprite{
 				setPlayersToOne_Button.buttonToggle(setPlayersToOne_Button.button);
 			}
         	setPlayers(2);
+        	setVsComputer(false);
+        	resetGame();
+        });
+
+         setVsComputer_Button.addEventListener(MouseEvent.CLICK, function(event:MouseEvent){
+        	
+        	if(setPlayersToOne_Button.buttonState == true){
+				setPlayersToOne_Button.buttonToggle(setPlayersToOne_Button.button);
+			}else if(setPlayersToTwo_Button.buttonState == true){
+				setPlayersToTwo_Button.buttonToggle(setPlayersToTwo_Button.button);
+			}
+        	setPlayers(2);
+        	setVsComputer(true);
         	resetGame();
         });
 

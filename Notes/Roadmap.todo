@@ -14,11 +14,12 @@ Features:
     ☐ Player Controls
       ☐ Display current bindings
     ✔ Speed @done (17-10-17 22:11)
+  ✔ Game Controller @done (17-10-18 07:53)
+  ✔ Rule fixes @done (17-10-18 08:46)
   ☐ Player modularity
-    ☐ Player Controller 
-    ✔ Game Controller @done (17-10-18 07:53)
-  ☐ Rule fixes
-  ☐ Computer Player
+    ☐ Player Controller
+    ☐ Computer Player
+   
 
   
 
@@ -26,8 +27,7 @@ Features:
 Polish(Code):
   ☐ Enum for keys 
   ☐ Remove magic numbers
-  ☐ Move game stuff in main to game object
-  ☐ Enum for settings 
+  ✔ Move game stuff in main to game object @done (17-10-18 08:48)
   ☐ Better comments 
   ☐ Tidy up Game class
   ☐ Incorperate lambdas?

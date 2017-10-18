@@ -29,13 +29,14 @@ class Snake {
 		var headPos:Point = body[0].location;
 		var neckPos:Point = body[1].location;
 		var moveValid:Bool = true;
+
 		if((headPos.x + dirX) == neckPos.x 
 			&& (headPos.y + dirY) == neckPos.y){
 
 			moveValid = false;
 
 		}
-
+		trace(dirY);
 		if(moveValid){
 			xd = dirX;
 			yd = dirY;
@@ -76,16 +77,24 @@ class Snake {
 		return body[0].location;
 	}
 
+	public function getDirection():Point{
+		return new Point(xd,yd);
+	}
+
 	public function up():Void{
+		trace("up");
 		changeDirection(0,-1);	
 	}
 	public function down():Void{
+		trace("down");
 		changeDirection(0,1);	
 	}
 	public function left():Void{
+		
 		changeDirection(-1,0);
 	}
 	public function right():Void{
+
 		changeDirection(1,0);	
 	}
 

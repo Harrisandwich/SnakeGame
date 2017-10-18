@@ -11,6 +11,7 @@ class Settings{
             "startOrientation" => "hor",
             "maxItems" => 1,
             "speed" => 500,
+            "vsComputer" => false,
             "controls" => [
                 [
                     "left" => "left_arrow",
