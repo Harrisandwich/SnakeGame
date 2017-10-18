@@ -6,17 +6,20 @@ Features:
     ✔ Collectables @done (17-10-17 11:51)
     ✔ Other snakes @done (17-10-17 12:07)
   ✔ Game Over @done (17-10-17 13:56)
-  ☐ Game Menu
-    ☐ Play 1p
-    ☐ Play 2p
+  ✔ Game Menu @done (17-10-17 22:11)
+    ✔ Play 1p @done (17-10-17 22:11)
+    ✔ Play 2p @done (17-10-17 22:11)
   ☐ Settings Menu
-    ☐ Play Area Size
+    ✔ Play Area Size @done (17-10-17 22:11)
     ☐ Player Controls
-    ☐ Speed
+      ☐ Display current bindings
+    ✔ Speed @done (17-10-17 22:11)
   ☐ Player modularity
     ☐ Player Controller 
-    ☐ Game Controller 
+    ✔ Game Controller @done (17-10-18 07:53)
+  ☐ Rule fixes
   ☐ Computer Player
+
   
 
 
@@ -31,6 +34,8 @@ Polish(Code):
 
 Polish(Feature):
   ☐ Player Colors
+  ☐ Sprint ability?
+  ☐ Allow user to change key bindings
 
 Test:
   ☐ Functionality
