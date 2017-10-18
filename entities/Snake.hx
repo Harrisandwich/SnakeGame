@@ -20,7 +20,7 @@ class Snake {
 	private var addToGrid:DisplayObject->DisplayObject;
 	private var removeFromGrid:DisplayObject->DisplayObject;
 	public var isDead:Bool;
-	public var isHit:Bool;
+	public var removed:Bool;
 	public var body:Array<Segment>;
 
 	//change direction of snake head
@@ -107,8 +107,11 @@ class Snake {
 
 	public function animate():Void {
 		
-		move();
-		draw();
+		if(!isDead){
+			move();
+			draw();
+		}
+		
 		
 		
 	}
@@ -116,6 +119,7 @@ class Snake {
 		for(b in body){
 			removeFromGrid(b);
 		}
+		removed = true;
 	}
 	public function new(color:UInt, headLocation:Point, orientation:String, startDirX:Float, startDirY:Float, grid:Grid){
 		

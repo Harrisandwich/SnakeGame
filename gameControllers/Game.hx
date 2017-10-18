@@ -28,10 +28,7 @@ class Game extends Sprite{
 	private var settings:Map<String, Dynamic>;
 	private var state:String;
 	private var isGameOver:Bool;
-
-	//move these to settings soon
-	private var gridSize:UInt;
-    private var maxItems:Int;
+    private var playerColors:Array<UInt> = [0x009900,0x009999];
     private var playAreaSize:Float;
 
 
@@ -71,10 +68,7 @@ class Game extends Sprite{
                 || head.y < 0
                 || head.y >= settings["gridSize"]){
 
-                //move to game over func
-            	s.body[0].isDead = true;
-                gameOver();
-                
+            	s.isDead = true;
             }
             for(os in snakes){
               
@@ -88,11 +82,10 @@ class Game extends Sprite{
                     if(head.x == os.body[seg].location.x 
                         && head.y == os.body[seg].location.y){
                         
-                        //move to game over func
-                    	s.isDead = true;
-                    	os.isHit = true;
-                    	os.body[seg].isDead = true;
-                        gameOver();
+                        
+                        
+                        s.isDead = true;
+                        
 
                     }
                 }
@@ -104,8 +97,23 @@ class Game extends Sprite{
 
     private function gameLoop():Void{
         
-        
+        var deadSnakes:Int = 0;
 
+        for(s in snakes){
+            if(s.isDead){
+                s.remove();
+                snakes.remove(s);
+                deadSnakes++;
+            }else{
+                if(s.body.length >= settings["gridSize"]){
+                    gameOver();
+                } 
+            }
+            
+        }
+        if(snakes.length == 0){
+            gameOver();
+        }
 
         if(!isGameOver){
 
@@ -113,7 +121,24 @@ class Game extends Sprite{
 	        if(currentItems.length < settings["maxItems"]){
 	            var numberOfItemsMissing:UInt = settings["maxItems"] - currentItems.length;
 	            for(i in 0...numberOfItemsMissing){
+
+
 	                var newItem = ItemSpawner.spawnItem(0xFFFF00,grid.cellSize,settings["gridSize"],100);
+                    var isItemOnSnake:Bool = true;
+                    while(isItemOnSnake){
+                        for(s in snakes){
+                            for(seg in s.body){
+                                if(newItem.location.x != seg.location.x 
+                                    && newItem.location.y != seg.location.y){
+                                    isItemOnSnake = false;
+                                    break;
+                                }
+                            }
+                            
+                        }
+                        newItem = ItemSpawner.spawnItem(0xFFFF00,grid.cellSize,settings["gridSize"],100);
+                        
+                    }
 	                currentItems.add(newItem);
 	                grid.addChild(newItem);
 	            }
@@ -126,10 +151,6 @@ class Game extends Sprite{
 	        }
 	        
 	        checkCollisions();
-	    }else{
-	    	for(s in snakes){
-	            s.flash();
-	        }
 	    }
 
     }
@@ -166,12 +187,14 @@ class Game extends Sprite{
 
         	dir *= -1;
         	trace(dir);
+            //move later
+            var playerColors:Array<UInt> = [0x009900,0x000099];
 
         	if(settings["startOrientation"] == "hor"){
-        		snakes.push(new Snake(0x009900,new Point(startLocation.x,startLocation.y),settings["startOrientation"],dir,0,grid));
+        		snakes.push(new Snake(playerColors[s],new Point(startLocation.x,startLocation.y),settings["startOrientation"],dir,0,grid));
         		startLocation.y += 5;
         	}else{
-        		snakes.push(new Snake(0x009900,new Point(startLocation.x,startLocation.y),settings["startOrientation"],0,dir,grid));
+        		snakes.push(new Snake(playerColors[s],new Point(startLocation.x,startLocation.y),settings["startOrientation"],0,dir,grid));
         		startLocation.x += 5;
         	}
         }
@@ -224,10 +247,10 @@ class Game extends Sprite{
         	trace(dir);
 
         	if(settings["startOrientation"] == "hor"){
-        		snakes.push(new Snake(0x009900,new Point(startLocation.x,startLocation.y),settings["startOrientation"],dir,0,grid));
+        		snakes.push(new Snake(playerColors[s],new Point(startLocation.x,startLocation.y),settings["startOrientation"],dir,0,grid));
         		startLocation.y += 5;
         	}else{
-        		snakes.push(new Snake(0x009900,new Point(startLocation.x,startLocation.y),settings["startOrientation"],0,dir,grid));
+        		snakes.push(new Snake(playerColors[s],new Point(startLocation.x,startLocation.y),settings["startOrientation"],0,dir,grid));
         		startLocation.x += 5;
         	}
         	
@@ -251,7 +274,10 @@ class Game extends Sprite{
 		
 		//remove EVERYTHING
 		for(s in snakes){
-			s.remove();
+            if(!s.removed){
+                s.remove();
+            }
+			
 		}
 		for(i in currentItems){
 			grid.removeChild(i);

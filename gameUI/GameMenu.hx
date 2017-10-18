@@ -177,7 +177,7 @@ class GameMenu extends Sprite{
 			}else if(setSpeedToFast_Button.buttonState == true){
 				setSpeedToFast_Button.buttonToggle(setSpeedToFast_Button.button);
 			}
-        	setSpeed(1000);
+        	setSpeed(200);
         	resetGame();
         });
         setSpeedToNormal_Button.addEventListener(MouseEvent.CLICK, function(event:MouseEvent){
@@ -186,7 +186,7 @@ class GameMenu extends Sprite{
 			}else if(setSpeedToFast_Button.buttonState == true){
 				setSpeedToFast_Button.buttonToggle(setSpeedToFast_Button.button);
 			}
-        	setSpeed(500);
+        	setSpeed(100);
         	resetGame();
         });
         setSpeedToFast_Button.addEventListener(MouseEvent.CLICK, function(event:MouseEvent){
@@ -196,7 +196,7 @@ class GameMenu extends Sprite{
 			}else if(setSpeedToNormal_Button.buttonState == true){
 				setSpeedToNormal_Button.buttonToggle(setSpeedToNormal_Button.button);
 			}
-        	setSpeed(200);
+        	setSpeed(50);
         	resetGame();
         });
         
